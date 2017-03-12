@@ -78,8 +78,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         hot: true,
-        inline: true,
-        progress: true,
+        inline: true
     },
     plugins: plugins
 

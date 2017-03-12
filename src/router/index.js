@@ -13,6 +13,9 @@ const routes = [{
         path: '/',
         name: 'login',
         component: login
+    }, {
+        path: '*',
+        component: login
     }];
 
 export default new Router({

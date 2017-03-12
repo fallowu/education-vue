@@ -5,6 +5,6 @@
 </template>
 <style lang="sass">
 	.test {
-		color: blue;
+		color: red;
 	}
 </style>
