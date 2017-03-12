@@ -1,6 +1,6 @@
 <template>
 	<div class="test">
-		Hello!
+		Login!
 	</div>
 </template>
 <style lang="sass">

@@ -11,7 +11,7 @@ var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 
 var plugins = [
     //提公用js到common.js文件中
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.optimize.CommonsChunkPlugin('common'),
     //将样式统一发布到style.css中
     new ExtractTextPlugin({
         filename: "style.css", 
@@ -26,7 +26,7 @@ var plugins = [
 module.exports = {
     //项目的文件夹
     entry: {
-        build: APP_PATH
+        build: APP_PATH,
     },
     //输出文件名
     output: {
@@ -41,7 +41,23 @@ module.exports = {
     module: {
         rules: [{
             test: /\.vue$/,
-            use: 'vue',
+            use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              loaders: {
+                css: ExtractTextPlugin.extract({
+                  use: ['css-loader'],
+                  fallback: 'vue-style-loader'
+                }),
+                less: ExtractTextPlugin.extract({
+                  use: ['css-loader', 'sass-loader'],
+                  fallback: 'vue-style-loader'
+                })
+              }
+            }
+          },
+        ]
         }, {
             test: /\.css|scss$/,
             loader:"style-loader!css-loader!sass-loader"
@@ -56,7 +72,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.js'
+            'vue': 'vue/dist/vue.js'
         }
     },
     devServer: {

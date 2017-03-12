@@ -3,6 +3,9 @@ import router from './router';
 import App from './App.vue';
 //import * as filters from './filters/index.js';
 
+//开启debug模式
+Vue.config.debug = true;
+
 //引入css重置文件,基本的样式文件
 require('./css/normalize.css');
 
@@ -11,6 +14,5 @@ require('./css/normalize.css');
 
 new Vue({
     router,
-    store,
     render: h => h(App)
 }).$mount('#app');
