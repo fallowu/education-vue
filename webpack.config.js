@@ -4,6 +4,9 @@ var WebpackDevServer = require('webpack-dev-server');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var vue = require("vue-loader");
 
+// 配置异步加载地址
+var project_publicPath = process.env.NODE_ENV === 'production' ? __dirname + '/build/' : '/build/';
+
 //定义一些文件夹的路径
 var ROOT_PATH = path.resolve(__dirname);
 var APP_PATH = path.resolve(ROOT_PATH, 'src/main.js');
@@ -34,7 +37,7 @@ module.exports = {
         filename: '[name].js',
         // 指向异步加载的路径
         // 异步加载地址
-        publicPath: __dirname + '/build/',
+        publicPath: project_publicPath,
         // 非主文件的命名规则
         chunkFilename: '[id].build.js?[chunkhash]'
     },
@@ -45,7 +48,7 @@ module.exports = {
           {
             loader: 'vue-loader',
             options: {
-              loaders: {
+              use: {
                 css: ExtractTextPlugin.extract({
                   use: ['css-loader'],
                   fallback: 'vue-style-loader'
@@ -57,10 +60,18 @@ module.exports = {
               }
             }
           },
-        ]
-        }, {
-            test: /\.css|scss$/,
-            loader:"style-loader!css-loader!sass-loader"
+        ]}, {
+            test: /\.scss$/,
+            loader: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: "css-loader",
+            })
+        },{
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: "css-loader",
+            })
         }, {
             test: /\.(png|jpg|gif)$/,
             use: 'url?limit=40000'

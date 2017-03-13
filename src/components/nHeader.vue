@@ -1,6 +1,5 @@
 <template>
-	<div>
-		<nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation">
   		<div class="container">
   			<div class="navbar-header">
   				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -9,11 +8,10 @@
 	  				<span class="icon-bar"></span>
 	  				<span class="icon-bar"></span>
   				</button>
-  				<a class="navbar-brand" href="">E-Learning&nbsp;互动教学</a>
+  				<a class="navbar-brand" href="">教学互动系统</a>
   			</div>
   			<div id="navbar" class="navbar-collapse collapse">
   				<ul class="nav navbar-nav">
-  					<li><a href=""><i class="glyphicon glyphicon-home"></i> 首页</a></li>
   					<li><a href=""><i class="glyphicon glyphicon-heart"></i> 个人主页</a></li>
   					<li><a href=""><i class="glyphicon glyphicon-th"></i> 我的课程</a></li>
   					<li><a href=""><i class="glyphicon glyphicon-gift"></i> 我的好友</a></li>
@@ -37,12 +35,9 @@
   			</div><!--/.nav-collapse -->
   		</div>
   	</nav>
-	</div>
 </template>
 <script>
-	export default {
-		name: 'header'
-	}
+	
 </script>
 <style lang="sass">
 	
