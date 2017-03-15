@@ -8,6 +8,7 @@ Vue.config.debug = true;
 
 //引入css重置文件,基本的样式文件
 require('./css/normalize.css');
+require('./css/public.css');
 
 // 遍历输出a过滤器的模块
 //Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));

@@ -9,14 +9,25 @@ const login = resolve => {
     });
 };
 
+const personal = resolve => {
+    require.ensure(['../vue/personal.vue'], () => {
+        resolve(require('../vue/personal.vue'));
+    });
+}
 const routes = [{
         path: '/',
         name: 'login',
         component: login
     }, {
+        path: '/personal',
+        name: 'personal',
+        component: personal
+    }, 
+
+    {
         path: '*',
         component: login
-    }];
+    },];
 
 export default new Router({
     mode: 'history',

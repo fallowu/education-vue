@@ -54,6 +54,7 @@
 				</div>
 			</div>
 		</div>
+		<n-footer></n-footer>
 	</div>
 </template>
 <style lang="sass">
@@ -79,11 +80,13 @@
 </style>
 <script>
 	import nHeader from '../components/nHeader.vue'
+	import nFooter from '../components/nFooter.vue'
 	import Swiper from '../../static/swiper.min.js'
  	require('../../static/swiper.min.css')
 	export default {
 		components : {
-			nHeader
+			nHeader,
+			nFooter
 		},
 		mounted () {
      console.log('Swiper ready')
