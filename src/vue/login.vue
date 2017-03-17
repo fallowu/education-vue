@@ -1,6 +1,29 @@
 <template>
 	<div>
-		<n-header></n-header>
+		<nav class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
+  			<div class="container">
+  				<div class="navbar-header">
+  					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	  					<span class="sr-only">Toggle navigation</span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+  					</button>
+  					<a class="navbar-brand" href="">教学互动系统</a>
+  				</div>
+  			<div id="navbar" class="navbar-collapse collapse">
+  				<ul class="nav navbar-nav">
+            		<li><router-link to="/">首页</router-link></li>
+  					<li><router-link to="/personal">个人主页</router-link></li>
+  					<li><router-link to="/courseTable">我的课程</router-link></li>
+  					<li><router-link to="/friend">我的好友</router-link></li>
+  				</ul>
+  					<div class="nav navbar-nav navbar-right">
+  						<a class="btn-login">登陆</a>
+  					</div>
+  			</div><!--/.nav-collapse -->
+  			</div>
+  		</nav>
 		<div class="container">
 			<div class="row">
 				<div class="swiper-container col-lg-12">
@@ -12,9 +35,9 @@
 						<img class="imgload" src="http://www.ecnu.edu.cn/_upload/article/images/8c/eb/324eabc7489791e4a6808405126f/547dff8f-a724-45ef-8a8c-a9366e4a2fc2.jpg" alt="banner02">
 					</div>
 					</div>
-					<!-- 如果需要分页器 -->
+					<!-- 分页器 -->
 					<div class="swiper-pagination"></div>
-					<!-- 如果需要导航按钮 -->
+					<!-- 导航按钮 -->
 					<div class="swiper-button-prev"></div>
 					<div class="swiper-button-next"></div>
 				</div>
@@ -76,6 +99,19 @@
 			padding-bottom: 10px;
 			border-bottom: 1px solid $gray;
 		}
+	}
+	.btn-login {
+		display: block;
+		color: #f8f8f8;
+		height: 50px;
+		width: 50px;
+		line-height: 50px;
+	}
+	.btn-login:hover {
+		text-decoration: none;
+		color: white;
+		background-color: #3B7EB4;
+		cursor: pointer;
 	}
 </style>
 <script>

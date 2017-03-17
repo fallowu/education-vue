@@ -9,19 +9,81 @@ const login = resolve => {
     });
 };
 
+const homepage = resolve => {
+    require.ensure(['../vue/homepage.vue'], () => {
+        resolve(require('../vue/homepage.vue'));
+    });
+};
+
 const personal = resolve => {
     require.ensure(['../vue/personal.vue'], () => {
         resolve(require('../vue/personal.vue'));
     });
-}
+};
+
+const courseTable = resolve => {
+    require.ensure(['../vue/courseTable.vue'], () => {
+        resolve(require('../vue/courseTable.vue'));
+    });
+};
+
+const classPage = resolve => {
+    require.ensure(['../vue/classPage.vue'], () => {
+        resolve(require('../vue/classPage.vue'));
+    });
+};
+
+const course = resolve => {
+    require.ensure(['../vue/course.vue'], () => {
+        resolve(require('../vue/course.vue'));
+    });
+};
+
+const assignment = resolve => {
+    require.ensure(['../vue/assignment.vue'], () => {
+        resolve(require('../vue/assignment.vue'));
+    });
+};
+
+const friend = resolve => {
+    require.ensure(['../vue/friend.vue'], () => {
+        resolve(require('../vue/friend.vue'));
+    });
+};
+
+
 const routes = [{
         path: '/',
         name: 'login',
         component: login
     }, {
+        path: '/homepage',
+        name: 'homepage',
+        component: homepage
+    }, {
         path: '/personal',
         name: 'personal',
         component: personal
+    }, {
+        path: '/courseTable',
+        name: 'courseTable',
+        component: courseTable
+    }, {
+        path: '/course',
+        name: 'course',
+        component: course
+    }, {
+        path: '/classPage',
+        name: 'classPage',
+        component: classPage
+    }, {
+        path: '/assignment',
+        name: 'assignment',
+        component: assignment
+    }, {
+        path: '/friend',
+        name: 'friend',
+        component: friend
     }, 
 
     {

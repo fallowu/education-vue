@@ -12,9 +12,10 @@
   			</div>
   			<div id="navbar" class="navbar-collapse collapse">
   				<ul class="nav navbar-nav">
-  					<li><a href=""><i class="glyphicon glyphicon-heart"></i> 个人主页</a></li>
-  					<li><a href=""><i class="glyphicon glyphicon-th"></i> 我的课程</a></li>
-  					<li><a href=""><i class="glyphicon glyphicon-gift"></i> 我的好友</a></li>
+            <li><router-link to="/homepage">首页</router-link></li>
+  					<li><router-link to="/personal">个人主页</router-link></li>
+  					<li><router-link to="/courseTable">我的课程</router-link></li>
+  					<li><router-link to="/friend">我的好友</router-link></li>
   				</ul>
   				<ul class="nav navbar-nav navbar-right">
   					<li class="dropdown">

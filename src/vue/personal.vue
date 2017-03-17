@@ -1,284 +1,535 @@
 <template>
 	<div>
 		<n-header></n-header>
-			<div class="container main">
-  		<div class="row">
-  			<div class="col-md-9">
-  				<div id="basic-info" class="box">
-  					<div class="row">
-  						<div class="col-md-12">
-  							<label class="box-title lb">基本信息</label>
-  							<span>
-  								<a href="javascript:void(0);" class="btn btn-xs" id="edit-btn"><i class="glyphicon glyphicon-pencil"></i></a>
-  								<a href="javascript:void(0);" class="btn btn-xs" id="save-btn"><i class="glyphicon glyphicon-floppy-save"></i></a>
-  								<a href="javascript:void(0);" class="btn btn-xs" id="cancel-btn"><i class="glyphicon glyphicon-remove-circle"></i></a>
-  							</span>
-  							<form class="form form-horizontal" id="college-form" method="POST">
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">姓名</label>
-		  						 	<div class="col-sm-9">
-		  						 		<span class="show-field"><!-- <c:out value="${user.userName}"></c:out> --></span>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">学号</label>
-		  						 	<div class="col-sm-9">
-		  						 		<span class="show-field"><!-- <c:out value="${user.userId}"></c:out> --></span>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">院系</label>
-		  						 	<div class="col-sm-9">
-		  						 		<span class="show-field"><!-- <c:out value="${user.departName}"></c:out> --></span>
-		  						 	</div>
-		  						 </div>
-		  					</form>
-		  					<form class="form form-horizontal" id="basic-form">
-		  						<input type="hidden" name="userId" value="${user.userId}" />
-		  						<div class="form-group">
-		  						 	<label class="col-sm-3 control-label">昵称</label>
-		  						 	<div class="col-sm-9">
-		  						 		<!-- <c:choose>
-	  						 				<c:when test="${empty user.nickName}">
-	  						 					<span class="show-field grey">暂无昵称</span>
-	  						 					<input type="text" class="edit-field form-control" id="nickname" name="nickname" placeholder="请输入昵称" />
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field"><c:out value="${user.nickName}"></c:out></span>
-	  						 					<input type="text" class="edit-field form-control" value="" id="nickname" name="nickname" placeholder="请输入昵称" />
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-	  						 			<span class="text-danger"></span>
-		  						 	</div>
-		  						 </div>
-		  						<div class="form-group">
-		  						 	<label class="col-sm-3 control-label">性别</label>
-		  						 	<div class="col-sm-9">
-		  						 		<!-- <c:choose>
-	  						 				<c:when test="${user.gender == 1}">
-	  						 					<span class="show-field">女</span>
-	  						 				</c:when>
-	  						 				<c:when test="${user.gender == 0}">
-	  						 					<span class="show-field">男</span>
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field grey">暂无性别信息</span>
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-  						 				<label class="radio-inline edit-field" >
-		  						 			<input type="radio" name="gender" id="gender-m" value="0" data-gender=""> 男
-		  						 		</label>
-										<label class="radio-inline edit-field">
-		  						 			<input type="radio" name="gender" id="gender-f" value="1"> 女
-		  						 		</label>
-		  						 	</div>
-		  						</div>
-		  						<div class="form-group">
-		  						 	<label class="col-sm-3 control-label">个性签名</label>
-		  						 	<div class="col-sm-9">
-		  						 		<!-- <c:choose>
-	  						 				<c:when test="${empty user.motto}">
-	  						 					<span class="show-field grey">暂无个性签名</span>
-	  						 					<textarea class="edit-field form-control" id="motto" name="motto" ></textarea>
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field">${user.motto}</span>
-	  						 					<textarea class="edit-field form-control" id="motto" name="motto">${user.motto}</textarea>
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-	  						 			<span class="text-danger"></span>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">兴趣爱好</label>
-		  						 	<div class="col-sm-9">
-		  						 		<!-- <c:choose>
-	  						 				<c:when test="${empty user.hobbies}">
-	  						 					<span class="show-field grey">暂无爱好信息</span>
-	  						 					<input type="hidden" id="hobby" name="hobby" value=""/>
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field">${user.hobbies}</span>
-	  						 					<input type="hidden" id="hobby" name="hobby" value="${user.hobbies}"/>
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-	  						 			<span class="text-danger"></span>
-		  						 		<div class="edit-field">
-		  						 			<div id="hobby-list"></div>
-		  						 			<div class="input-group" id="add-hobby">
-		  						 				<input type="text" class="form-control" id="new-hobby" placeholder="请输入新的爱好，并用空格隔开">
-		  						 				<span class="input-group-btn">
-		  						 					<button class="btn btn-info" type="button" id="add-hobby-btn">
-		  						 						<i class="glyphicon glyphicon-plus"></i>
-		  						 					</button>
-		  						 				</span>
-		  						 			</div>
-		  						 		</div>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">家乡</label>
-		  						 	<div class="col-sm-9">
-		  						 	<!-- 	<c:choose>
-	  						 				<c:when test="${user.homelandP == '-1' && user.homelandC == '-1'}">
-	  						 					<span class="show-field grey">暂无家乡信息</span>
-	  						 				</c:when>
-	  						 				<c:when test="${user.homelandP != '-1' && user.homelandC == '-1'}">
-	  						 					<span class="show-field"><c:out value="${user.provinceName}"></c:out></span>
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field"><c:out value="${user.provinceName}"></c:out> - <c:out value="${user.cityName}"></c:out></span>
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-		  						 		<select class="edit-field form-control" data-id="" id="province" name="homelandP"></select>
-		  						 		<span class="edit-field">省/直辖市</span>
-		  						 		<select class="edit-field form-control" data-id="" id="city" name="homelandC"></select>
-		  						 		<span class="edit-field">市/区</span>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">生日</label>
-		  						 	<div class="col-sm-9">
-		  						 	<!-- 	<c:choose>
-	  						 				<c:when test="${empty user.birthday}">
-	  						 					<span class="show-field grey">暂无生日信息</span>
-	  						 					<input type="date" class="edit-field form-control" id="birthday" name="birthday" />
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field"><c:out value="${user.birthday}"></c:out></span>
-	  						 					<input type="date" class="edit-field form-control" value="<c:out value="${user.birthday}"></c:out>" id="birthday" name="birthday" />
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">手机</label>
-		  						 	<div class="col-sm-9">
-		  						 		<!-- <c:choose>
-	  						 				<c:when test="${empty user.telephone}">
-	  						 					<span class="show-field grey">暂无手机信息</span>
-	  						 					<input type="text" class="edit-field form-control" id="telephone" name="telephone" placeholder="请输入手机信息" />
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field"><c:out value="${user.telephone}"></c:out></span>
-	  						 					<input type="text" class="edit-field form-control" value="<c:out value="${user.telephone}"></c:out>" id="telephone" name="telephone" placeholder="请输入手机信息" />
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-	  						 			<span class="text-danger"></span>
-		  						 	</div>
-		  						 </div>
-		  						 <div class="form-group">
-		  						 	<label class="col-sm-3 control-label">常用邮箱</label>
-		  						 	<div class="col-sm-9">
-		  						 	<!-- 	<c:choose>
-	  						 				<c:when test="${empty user.email}">
-	  						 					<span class="show-field grey">暂无常用邮箱信息</span>
-	  						 					<input type="text" class="edit-field form-control" id="email" name="email" placeholder="请输入常用邮箱信息" />
-	  						 				</c:when>
-	  						 				<c:otherwise>
-	  						 					<span class="show-field"><c:out value="${user.email}"></c:out></span>
-	  						 					<input type="text" class="edit-field form-control" value="<c:out value="${user.email}"></c:out>" id="email" name="email" placeholder="请输入常用邮箱信息" />
-	  						 				</c:otherwise>
-	  						 			</c:choose> -->
-	  						 			<span class="text-danger"></span>
-		  						 	</div>
-		  						 </div>
-		  					</form>
-		  				</div>
-		  			</div>
-  				</div>
-  				
-  				<div id="latest-published" class="box">
-  					<div class="row">
-  						<div class="col-md-12">
-  							<label class="box-title llb">最新动态</label>
-  							<div id="latest-published-list">
-  								<p class="loading">载入中，请稍后……</p>
-  							</div>
-  						</div>
-  					</div>
-  				</div>
-  			</div>
-  			
-  			<div class="col-md-3">
-  				<div class="simpleInfo-part">
-  					<div class="row">
-  						<div class="col-md-12">
-  							<a href="uploadFace.do">
-  							<!-- 	<c:choose>
-  									<c:when test="${empty user.faceIcon || user.faceIcon == ''}">
-  										<img src="<%=request.getContextPath()%>/resource/img/blank.jpg"></img>
-  									</c:when>
-  									<c:otherwise><img src="<%=request.getContextPath()%>${user.faceIcon}"></img></c:otherwise>
-  								</c:choose> -->
-  							</a>
-  						</div>
-  					</div>
-  				</div>
-  				
-  				<div class="visitor-part box">
-  					<div class="row">
-  						<div class="col-sm-12">
-  							<label class="box-title">最近访客</label>
-  						</div>
-  					</div>
-  					<div class="row" id="visitor-list">
-  					<!-- 	<c:if test="${empty visitors}">
-	  						<span class="no-visitor">暂无访客</span>
-	  					</c:if>
-	  					<c:forEach var="visitor" items="${visitors}">
-	  						<div class="visitor">
-	  							<c:choose>
-  									<c:when test="${empty visitor.faceIcon || visitor.faceIcon == ''}">
-  										<img src="<%=request.getContextPath()%>/resource/img/blank.jpg"></img>
-  									</c:when>
-  									<c:otherwise><img src="<%=request.getContextPath()%>${visitor.faceIcon}"></img></c:otherwise>
-  								</c:choose>
-	  							<a class="name" target="_blank" href="${visitor.homepage}">${visitor.visitorName}</a>
-	  							<span class="time">${visitor.time}</span>
-	  						</div>
-	  					</c:forEach> -->
-  					</div>
-  				</div>
-  				
-  				<div class="friend-part box">
-	  				<div class="row">
-	  					<div class="col-sm-12">
-  							<label class="box-title">好友列表</label>
-  							<a href="friend.do">更多</a>
-  						</div>
-	  				</div>
-	  				<div class="row" id="friend-list">
-	  				<!-- 	<c:if test="${empty friends}">
-	  						<span class="no-friend">暂无好友</span>
-	  					</c:if>
-	  					<c:forEach var="friend" items="${friends}">
-	  						<div class="friend">
-	  							<c:choose>
-  									<c:when test="${empty friend.faceIcon || friend.faceIcon == ''}">
-  										<img src="<%=request.getContextPath()%>/resource/img/blank.jpg"></img>
-  									</c:when>
-  									<c:otherwise><img src="<%=request.getContextPath()%>${friend.faceIcon}"></img></c:otherwise>
-  								</c:choose>
-	  							<a class="name" target="_blank" href="${friend.homepage}">${friend.userName}</a>
-	  						</div>
-	  					</c:forEach> -->
-  					</div>
-  				</div>
-  			</div>
-  		</div>
-  	</div> <!-- /container -->
+		<div class="container main">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="basic-info box">
+						<div class="row">
+							<div class="col-md-12">
+								<label class="box-title lb">基本信息</label>
+								<span>
+									<a v-if="!canEdit" href="javascript:void(0);" class="btn btn-xs" @click="editInfo"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a v-if="canEdit" href="javascript:void(0);" class="btn btn-xs" @click="saveInfo"><i class="glyphicon glyphicon-floppy-save"></i></a>
+									<a v-if="canEdit" href="javascript:void(0);" class="btn btn-xs" @click="cancelInfo"><i class="glyphicon glyphicon-remove-circle"></i></a>
+								</span>
+								<form class="form form-horizontal" id="college-form" method="POST">
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">姓名</label>
+										<div class="col-sm-9">
+											<span class="show-field">{{user.name}}</span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">学号</label>
+										<div class="col-sm-9">
+											<span class="show-field">{{user.userId}}</span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">院系</label>
+										<div class="col-sm-9">
+											<span class="show-field">{{user.departName}}</span>
+										</div>
+									</div>
+								</form>
+
+
+								<!-- displayForm -->
+								<form v-if="!canEdit" class="form form-horizontal basic-form">
+									<input type="hidden" name="userId" value="${user.userId}" />
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">昵称</label>
+										<div class="col-sm-9">
+											<span v-if="user.nickName" class="show-field">{{user.nickName}}</span>
+											<span v-else class="show-field grey">暂无昵称</span>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">性别</label>
+										<div class="col-sm-9">
+											<span v-if="user.gender == 1" class="show-field">女</span>
+											<span v-else-if="user.gender == 0" class="show-field">男</span>
+											<span v-else class="show-field grey">暂无性别信息</span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">个性签名</label>
+										<div class="col-sm-9">
+											<span v-if="user.motto" class="show-field">{{user.motto}}</span>
+											<span v-else class="show-field grey">暂无个性签名</span>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">兴趣爱好</label>
+										<div class="col-sm-9">
+											<span v-if="user.hobbies" class="show-field">{{user.hobbies}}</span>
+											<span v-else class="show-field grey">暂无爱好信息</span>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">家乡</label>
+										<div class="col-sm-9">
+											<span v-if="user.homelandP == '-1' && user.homelandC == '-1' " class="show-field grey">暂无家乡信息</span>
+											<span v-else-if="user.homelandP != '-1' && user.homelandC == '-1' " class="show-field">{{user.provinceName}}</span>
+											<span v-else class="show-field">{{user.provinceName}} - {{user.cityName}}</span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">生日</label>
+										<div class="col-sm-9">
+											<span v-if="user.birthday" class="show-field">{{user.birthday}}</span>
+											<span v-else class="show-field grey">暂无生日信息</span>						
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">手机</label>
+										<div class="col-sm-9">
+											<span v-if="user.telephone" class="show-field">{{user.telephone}}</span>
+											<span v-else class="show-field grey">暂无手机信息</span>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">常用邮箱</label>
+										<div class="col-sm-9">
+											<span v-if="user.telephone" class="show-field">{{user.email}}</span>
+											<span v-else class="show-field grey">暂无常用邮箱信息</span>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+								</form>
+
+								<!-- editForm -->
+								<form v-if="canEdit" class="form form-horizontal basic-form">
+									<input type="hidden" name="userId" value="${user.userId}" />
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">昵称</label>
+										<div class="col-sm-9">
+											<input v-if="user.nickName" type="text" class="form-control" :value="user.nickName" id="nickname" name="nickname" placeholder="请输入昵称">
+											<input v-else type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入昵称" />
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">性别</label>
+										<div class="col-sm-9">
+											<label class="radio-inline " >
+												<input type="radio" name="gender" id="gender-m" value="0" :checked="!user.gender"> 男
+											</label>
+											<label class="radio-inline ">
+												<input type="radio" name="gender" id="gender-f" value="1" :checked="user.gender"> 女
+											</label>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">个性签名</label>
+										<div class="col-sm-9">
+											<textarea v-if="user.motto" class="form-control" id="motto" name="motto">{{user.motto}}</textarea>
+											<textarea  v-else class="form-control" id="motto" name="motto" ></textarea>
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">兴趣爱好</label>
+										<div class="col-sm-9">
+											<input v-if="user.hobbies" type="hidden" id="hobby" name="hobby" :value="user.hobbies"/>
+											<input v-else type="hidden" id="hobby" name="hobby" value=""/>
+											<span class="text-danger"></span>
+											<div class="">
+												<div id="hobby-list"></div>
+												<div class="input-group" id="add-hobby">
+													<input type="text" class="form-control" id="new-hobby" placeholder="请输入新的爱好，并用空格隔开">
+													<span class="input-group-btn">
+														<button class="btn btn-info" type="button" id="add-hobby-btn">
+															<i class="glyphicon glyphicon-plus"></i>
+														</button>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">家乡</label>
+										<div class="col-sm-9">
+											<select class="form-control" data-id="" id="province" name="homelandP">
+												<option v-for="province in provinces" :value="province.provinceId">{{province.provinceName}}</option>
+											</select>
+											<span class="">省/直辖市</span>
+											<select class="form-control" data-id="" id="city" name="homelandC">
+												<option v-for="city in cities" :value="city.cityId">{{city.cityName}}</option>
+											</select>
+											<span class="">市/区</span>						
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">生日</label>
+										<div class="col-sm-9">
+											<input v-if="user.birthday" type="date" class="form-control" :value="user.birthday" id="birthday" name="birthday" />
+											<input v-else type="date" class="form-control" id="birthday" name="birthday" />
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">手机</label>
+										<div class="col-sm-9">
+											<input v-if="user.telephone" type="text" class="form-control" :value="user.telephone" id="telephone" name="telephone" placeholder="请输入手机信息" />
+											<input v-else type="text" class="form-control" id="telephone" name="telephone" placeholder="请输入手机信息" />
+											<span class="text-danger"></span>
+										</div>
+									</div>
+									<div :class="formGroup">
+										<label class="col-sm-3 control-label">常用邮箱</label>
+										<div class="col-sm-9">
+											<input v-if="user.telephone" type="text" class="form-control" :value="user.email" id="email" name="email" placeholder="请输入常用邮箱信息" />
+											<input v-else type="text" class="form-control" id="email" name="email" placeholder="请输入常用邮箱信息" />
+											<span class="text-danger"></span>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="latest-published" class="box">
+						<div class="row">
+							<div class="col-md-12">
+								<label class="box-title llb">最新动态</label>
+								<div id="latest-published-list">
+									<p class="loading">载入中，请稍后……</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="simpleInfo-part">
+						<div class="row">
+							<div class="col-md-12">
+								<a href="uploadFace.do">
+									<img v-if="user.faceIcon" src="" alt="">
+									<img v-else src="" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="visitor-part box">
+						<div class="row">
+							<div class="col-sm-12">
+								<label class="box-title">最近访客</label>
+							</div>
+						</div>
+						<div class="row" id="visitor-list">
+							<span v-if="!visitors" class="no-visitor">暂无访客</span>
+							<template v-for="visitor in visitors">
+								<div class="visitor">
+									<img v-if="!visitor.faceIcon || visitor.faceIcon =='' " src="" alt="">
+									<img v-else src="" alt="">
+									<a class="name" target="_blank" :href="visitor.homepage">{{visitor.visitorName}}</a>
+									<span class="time">{{visitor.time}}</span>
+								</div>
+							</template>
+						</div>
+					</div>
+
+					<div class="friend-part box">
+						<div class="row">
+							<div class="col-sm-12">
+								<label class="box-title">好友列表</label>
+								<a href="friend.do">更多</a>
+							</div>
+						</div>
+						<div class="row" id="friend-list">
+							<span v-if="!friends" class="no-friend">暂无好友</span>
+							<template v-for="friend in friends">
+								<div class="friend">
+									<img v-if="!friend.faceIcon || friend.faceIcon =='' " src="" alt="">
+									<img v-else src="" alt="">
+									<a class="name" target="_blank" :href="friend.homepage">{{friend.userName}}</a>
+								</div>
+							</template>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<n-footer></n-footer>
 	</div>
-		
+
 </template>
 <style lang="sass">
 
+	.basic-info {
+		label {
+			margin-bottom: 0;
+		}
+		label.box-title + span a{
+			color: #eee;
+			margin-top: 4px;
+		}
+		label.box-title + span a:active{
+			box-shadow: none;
+		}
+		label.box-title + span a:visited{
+			color: #eee;
+		}
+		label.box-title + span a:hover{
+			color: #fff;
+		}
+		form {
+			margin-bottom: 12px;
+			.form-group {
+				margin-bottom: 0;
+			}
+			.form-group.form-margin {
+				margin-bottom: 8px;
+			}
+			.show-field{
+				display: block;
+				padding-top: 7px;
+			}
+			.show-field.grey{
+				color: #aaa;
+			}
+			.hobby-item{
+				border-radius: 3px;
+				padding: 3px 6px; 
+				margin-right: 4px;
+				margin-bottom: 4px;
+				display: inline-block;
+				color: #fff;
+			}
+			.hobby-item:nth-child(5n+1){
+				background-color: #F999AA;
+			}
+			.hobby-item:nth-child(5n+2){
+				background-color: #FAD136;
+			}
+			.hobby-item:nth-child(5n+3){
+				background-color: #38E454;
+			}
+			.hobby-item:nth-child(5n+4){
+				background-color: #31A2FF;
+			}
+			.hobby-item:nth-child(5n){
+				background-color: #D15AFF;
+			}
+			.hobby-item i{
+				cursor: pointer;
+			}
+		}
+	}
+	.form-control{
+		width: 70%;
+	}
+
+	#latest-published label{
+		margin-bottom: 0;
+	}
+
+	.basic-form{
+		margin-top: -10px;
+	}
+
+	@media (max-width: 768px){
+		.basic-info {
+			form{
+				padding-left: 10%;
+			}
+			.form-control{
+				width: 90%;
+			}
+		}
+		#province, #city{
+			width: 60%;
+		}
+		#city{
+			margin-left: 0;
+			margin-top: 4px;
+		}
+	}
+	#province, #city{
+		width: 25%;
+		display: inline-block;
+	}
+	#city{
+		margin-left: 3.2%;
+	}
+
+	@media (max-width: 1200px) and (min-width: 992px){
+		#province, #city{
+			width: 23.1%;
+		}
+	}
+	@media (max-width: 992px) and (min-width: 768px){
+		#province, #city{
+			width: 23.5%;
+		}
+	}
+
+	#add-hobby{
+		width: 70%;
+	}
+	@media (max-width: 768px){
+		#add-hobby{
+			width: 90%;
+		}
+	}
+	#new-hobby{
+		border-right: 0;
+	}
+
+	#latest-published-list{
+		padding: 10px;
+		.msg {
+			color: #888;
+		}
+		.list-item {
+			border: 1px solid #ccc;
+		}
+		.list-item:nth-child(odd){
+			text-align: left;
+			border-left-width: 0;
+		}
+		.list-item:nth-child(even){
+			text-align: right;
+			border-right-width: 0;
+		}
+		.list-item + .list-item{
+			margin-top: 10px;
+		}
+		.list-item p{
+			margin: 0;
+			padding: 4px;
+		}
+		.list-item:nth-child(odd) p{
+			border-left: 5px solid #BBE4F5;
+		}
+		.list-item:nth-child(even) p{
+			border-right: 5px solid #BBE4F5;
+		}
+		.list-item span.time{
+			font-size: 12px;
+			color: #777;
+			padding: 2px 4px;
+			display: block;
+		}
+		.list-item:nth-child(odd) span.time{
+			border-left: 5px solid #ccc;
+		}
+		.list-item:nth-child(even) span.time{
+			border-right: 5px solid #ccc;
+		}
+		.list-item p.content img.img{
+			height: 80px;
+		}
+		.list-item p.content img.img:hover{
+			cursor: pointer;
+		}
+	}
+
+
+	#img-show img.img{
+		width: 868px;
+	}
+
+	#added-mark, #add-friend{
+		padding: 3px 8px;
+		margin-top: 11px;
+		margin-right: 15px;
+	}
+	#added-mark:hover{
+		background-color: #5cb85c;
+		border-color: #4cae4c;
+	}
+	#add-friend:hover{
+		background-color: #5bc0de;
+		border-color: #46b8da;
+	}
+
+	#motto + span, #telephone + span, #email + span{
+		display: block;
+	}
 </style>
+
 <script>
-	import nHeader from '../components/nHeader.vue'
-	import nFooter from '../components/nFooter.vue'
+	import axios from 'axios';
+	import nHeader from '../components/nHeader.vue';
+	import nFooter from '../components/nFooter.vue';
 	export default {
+		data : function() {
+			return {
+				provinces : [],
+				cities : [],
+				canEdit : false,
+				artlist : [],
+				user : {
+					"name": "Chester",
+					"gender": 0,
+					"nickName": "Chaz",
+					"motto": "Life is Strange",
+					"hobbies": "",
+					"homelandP" : "1",
+					"homelandC" : "1",
+					"provinceName": "上海",
+					"cityName": "松江区",
+					"email": "chaz@test.com"
+				},
+				formGroup : {
+					'form-group' : true,
+					'form-margin' : false
+				}
+			}
+		},
+		mounted : function () {
+			this.getPC();
+			this.provinces.push({ 
+				"provinceId": 1,
+				"provinceName": "上海"
+			});
+			console.log(this.provinces);
+		},
+		methods : {
+			//获取城市列表信息
+			getPC : function() {
+				axios.get('')
+				.then((returnData) => {
+					if(returnData.returnCode > 0){
+						this.provinces = returnData.provinces;
+						this.cities = returnData.cities;
+					} else {
+						console.log("数据库里缺少省份信息或城市信息");
+					}
+				})
+				.catch(() => {
+					console.log('载入所有省份和城市信息失败');
+				})
+			}, 
+			getUserInfo : function() {
+				axios.get()
+				.then((returnData) => {
+					if(returnData.returnCode > 0){
+						this.user = returnData.user;
+					} else {
+						console.log("数据库里缺少个人信息");
+					}
+				})
+				.catch(() => {
+					console.log('载入个人信息失败');
+				})
+			},
+			editInfo : function() {
+				this.canEdit = true;
+				this.formGroup['form-margin'] = true;
+			},
+			saveInfo : function() {
+				this.canEdit = false;
+			}
+		},
 		components : {
 			nHeader,
 			nFooter
