@@ -1,0 +1,17 @@
+$gray: #e4e4e4;
+$white: #f9f9f9;
+@mixin centered($position) {
+	position: $position;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+@mixin bordered($width, $radius) {
+	border: $width solid $gray;
+	border-radius: $radius;
+}
+
+@mixin shadowed($expand) {
+	box-shadow: 0 0 $expand $gray;
+}

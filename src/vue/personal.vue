@@ -457,7 +457,6 @@
 </style>
 
 <script>
-	import axios from 'axios';
 	import nHeader from '../components/nHeader.vue';
 	import nFooter from '../components/nFooter.vue';
 	export default {
@@ -496,7 +495,7 @@
 		methods : {
 			//获取城市列表信息
 			getPC : function() {
-				axios.get('')
+				this.$ajax.get('')
 				.then((returnData) => {
 					if(returnData.returnCode > 0){
 						this.provinces = returnData.provinces;
@@ -510,7 +509,7 @@
 				})
 			}, 
 			getUserInfo : function() {
-				axios.get()
+				this.$ajax.get()
 				.then((returnData) => {
 					if(returnData.returnCode > 0){
 						this.user = returnData.user;

@@ -19,7 +19,7 @@
 						<li><router-link to="/friend">我的好友</router-link></li>
 					</ul>
 					<div class="nav navbar-nav navbar-right">
-						<a @click="loginTest" class="btn-login">登录</a>
+						<a @click="toggleLoginModal" class="btn-login">登录</a>
 					</div>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -77,11 +77,44 @@
 				</div>
 			</div>
 		</div>
-		<n-footer></n-footer>
-	</div>
+		<div v-if="loginToggle" class="modal-layer"></div>
+		<transition name="slide-fade">
+			<div v-if="loginToggle" class="container modal-login">
+				<form class="form-horizontal">
+				<!-- <div class="alert alert-danger">
+					Session过期啦~ 请重新登陆
+				</div> -->
+				<div class="form-group">
+					<label class="form-head col-sm-12">教学互动系统</label>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">学工号</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" v-model="userId" placeholder="请输入学工号">
+						<span class="msg text-danger"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">密码</label>
+					<div class="col-sm-8">
+						<input type="password" class="form-control" v-model="userPassword" placeholder="请输入密码">
+						<span class="msg text-danger"></span>
+					</div>
+				</div>
+				<div class="form-group form-login">
+					<div class="col-sm-offset-4 col-sm-8">
+						<a @click="login" class="btn btn-primary">登&nbsp;&nbsp;录</a>
+					</div>
+				</div>
+			</form>
+		</div>
+		</transition>
+
+	<n-footer></n-footer>
+</div>
 </template>
 <style lang="sass">
-	$gray: #e4e4e4;
+	@import '../scss/common.scss';
 	.swiper-container {
 		padding: 0;
 	}
@@ -113,20 +146,61 @@
 		background-color: #3B7EB4;
 		cursor: pointer;
 	}
+	.modal-layer {
+		background-color: rgba(0,0,0,.5);
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 3;
+	}
+	.modal-login {
+		width: 400px;
+		height: 300px;
+		padding: 40px 20px;
+		@include centered(fixed);
+		@include bordered(1px, 10px);
+		@include shadowed(1px);
+		background-color: $white;
+		z-index: 4;
+		
+		.form-head {
+			text-align: center;
+			font-size: 26px;
+		}
+		.form-login {
+			margin-top: 30px;
+		}
+	}
+	.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+
+.slide-fade-enter, .slide-fade-leave-active {
+  top: 60%;
+  opacity: 0;
+}
 </style>
 <script>
-	import axios from 'axios'
 	import nHeader from '../components/nHeader.vue'
 	import nFooter from '../components/nFooter.vue'
-	import Swiper from '../../static/swiper.min.js'
-	require('../../static/swiper.min.css')
+	import Swiper from '../js/swiper.min.js'
+	import md5 from '../js/md5.min.js'
+	require('../../src/css/swiper.min.css')
 	export default {
 		components : {
 			nHeader,
 			nFooter
 		},
+		data : function() {
+			return {
+				userId: '',
+				userPassword: '',
+				loginToggle: false
+			}
+		},
 		mounted () {
-			console.log('Swiper ready')
 			var mySwiper = new Swiper('.swiper-container', {
 				direction: 'horizontal',
 				loop: true,
@@ -136,19 +210,29 @@
 			})
 		},
 		methods : {
-			loginTest : function() {
-				axios.get('https://education.lijingye.win/auth/login', {
-					id: '10112510101',
-					password: '111111'
+			toggleLoginModal : function() {
+				this.loginToggle = true;
+			},
+			login : function() {
+				this.$ajax.post('auth/login', {
+					id: this.userId,
+					password: md5(this.userPassword)
 				})
 				.then((response) => {
-					if (response.data.success) {
-						console.log(response);
+					//成功登陆改变登陆状态
+					this.$store.dispatch('isLogin');
+					const userInfo = {
+						'id' : this.userId,
+						'accessToken' : response.data.data.access_token
 					}
+					console.log(userInfo);
+					this.$store.dispatch('setUserInfo', userInfo);
+					//跳转个人主页
+					this.$router.push('/personal');
 				})
 				.catch((error) => {
 					console.log(error);
-				})
+				});
 			}
 		}
 	}
