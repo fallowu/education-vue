@@ -39,6 +39,15 @@ const store = new Vuex.Store({
 		}
 	},
 	getters: {
+		getLoginState (state) {
+			return state.isLogin;
+		},
+		getUserInfo (state) {
+			return state.userInfo;
+		},
+		getToken(state) {
+			return state.userInfo.accessToken;
+		},
 	}
 })
 

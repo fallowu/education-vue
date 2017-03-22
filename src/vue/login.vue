@@ -12,12 +12,7 @@
 					<a class="navbar-brand" href="">教学互动系统</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li><router-link to="/">首页</router-link></li>
-						<li><router-link to="/personal">个人主页</router-link></li>
-						<li><router-link to="/courseTable">我的课程</router-link></li>
-						<li><router-link to="/friend">我的好友</router-link></li>
-					</ul>
+					
 					<div class="nav navbar-nav navbar-right">
 						<a @click="toggleLoginModal" class="btn-login">登录</a>
 					</div>
@@ -81,37 +76,37 @@
 		<transition name="slide-fade">
 			<div v-if="loginToggle" class="container modal-login">
 				<form class="form-horizontal">
-				<!-- <div class="alert alert-danger">
-					Session过期啦~ 请重新登陆
-				</div> -->
-				<div class="form-group">
-					<label class="form-head col-sm-12">教学互动系统</label>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">学工号</label>
-					<div class="col-sm-8">
-						<input type="text" class="form-control" v-model="userId" placeholder="请输入学工号">
-						<span class="msg text-danger"></span>
+					<div class="form-group form-close">
+						<span @click="toggleLoginModal" class="glyphicon glyphicon-remove"></span>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-3 control-label">密码</label>
-					<div class="col-sm-8">
-						<input type="password" class="form-control" v-model="userPassword" placeholder="请输入密码">
-						<span class="msg text-danger"></span>
+					<div class="form-group">
+						<label class="form-head col-sm-12">教学互动系统</label>
 					</div>
-				</div>
-				<div class="form-group form-login">
-					<div class="col-sm-offset-4 col-sm-8">
-						<a @click="login" class="btn btn-primary">登&nbsp;&nbsp;录</a>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">学工号</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" v-model="userId" placeholder="请输入学工号">
+							<span class="msg text-danger"></span>
+						</div>
 					</div>
-				</div>
-			</form>
-		</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">密码</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" v-model="userPassword" placeholder="请输入密码">
+							<span class="msg text-danger"></span>
+						</div>
+					</div>
+					<div class="form-group form-login-btn">
+						<div class="col-sm-offset-4 col-sm-8">
+							<a @click="login" class="btn btn-primary">登&nbsp;&nbsp;录</a>
+						</div>
+					</div>
+				</form>
+			</div>
 		</transition>
 
-	<n-footer></n-footer>
-</div>
+		<n-footer></n-footer>
+	</div>
 </template>
 <style lang="sass">
 	@import '../scss/common.scss';
@@ -158,7 +153,7 @@
 	.modal-login {
 		width: 400px;
 		height: 300px;
-		padding: 40px 20px;
+		padding: 10px 20px 40px 20px;
 		@include centered(fixed);
 		@include bordered(1px, 10px);
 		@include shadowed(1px);
@@ -169,18 +164,24 @@
 			text-align: center;
 			font-size: 26px;
 		}
-		.form-login {
+		.form-login-btn {
 			margin-top: 30px;
+		}
+		.form-close {
+			text-align: right;
+			span {
+				cursor: pointer;
+			}
 		}
 	}
 	.slide-fade-enter-active {
-  transition: all .3s ease;
-}
+		transition: all .3s ease;
+	}
 
-.slide-fade-enter, .slide-fade-leave-active {
-  top: 60%;
-  opacity: 0;
-}
+	.slide-fade-enter, .slide-fade-leave-active {
+		top: 60%;
+		opacity: 0;
+	}
 </style>
 <script>
 	import nHeader from '../components/nHeader.vue'
@@ -211,7 +212,7 @@
 		},
 		methods : {
 			toggleLoginModal : function() {
-				this.loginToggle = true;
+				this.loginToggle = !this.loginToggle;
 			},
 			login : function() {
 				this.$ajax.post('auth/login', {

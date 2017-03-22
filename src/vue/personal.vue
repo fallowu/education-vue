@@ -23,13 +23,13 @@
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">学号</label>
 										<div class="col-sm-9">
-											<span class="show-field">{{user.userId}}</span>
+											<span class="show-field">{{user.id}}</span>
 										</div>
 									</div>
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">院系</label>
 										<div class="col-sm-9">
-											<span class="show-field">{{user.departName}}</span>
+											<span class="show-field">{{user.depart}}</span>
 										</div>
 									</div>
 								</form>
@@ -49,8 +49,7 @@
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">性别</label>
 										<div class="col-sm-9">
-											<span v-if="user.gender == 1" class="show-field">女</span>
-											<span v-else-if="user.gender == 0" class="show-field">男</span>
+											<span v-if="user.gender" class="show-field">{{user.gender}}</span>
 											<span v-else class="show-field grey">暂无性别信息</span>
 										</div>
 									</div>
@@ -73,9 +72,8 @@
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">家乡</label>
 										<div class="col-sm-9">
-											<span v-if="user.homelandP == '-1' && user.homelandC == '-1' " class="show-field grey">暂无家乡信息</span>
-											<span v-else-if="user.homelandP != '-1' && user.homelandC == '-1' " class="show-field">{{user.provinceName}}</span>
-											<span v-else class="show-field">{{user.provinceName}} - {{user.cityName}}</span>
+											<span v-if="user.home" class="show-field">{{user.home}}</span>
+											<span v-else class="show-field grey">暂无家乡信息</span>
 										</div>
 									</div>
 									<div :class="formGroup">
@@ -466,18 +464,9 @@
 				cities : [],
 				canEdit : false,
 				artlist : [],
-				user : {
-					"name": "Chester",
-					"gender": 0,
-					"nickName": "Chaz",
-					"motto": "Life is Strange",
-					"hobbies": "",
-					"homelandP" : "1",
-					"homelandC" : "1",
-					"provinceName": "上海",
-					"cityName": "松江区",
-					"email": "chaz@test.com"
-				},
+				visitors : [],
+				friends : [],
+				user : {},
 				formGroup : {
 					'form-group' : true,
 					'form-margin' : false
@@ -485,39 +474,40 @@
 			}
 		},
 		mounted : function () {
-			this.getPC();
+			// this.getPC();
 			this.provinces.push({ 
 				"provinceId": 1,
 				"provinceName": "上海"
 			});
-			console.log(this.provinces);
+			this.getUserInfo();
 		},
 		methods : {
-			//获取城市列表信息
-			getPC : function() {
-				this.$ajax.get('')
+			//获取省份列表信息
+			getProvinces : function() {
+				this.$ajax.get('util/provinces')
 				.then((returnData) => {
-					if(returnData.returnCode > 0){
-						this.provinces = returnData.provinces;
-						this.cities = returnData.cities;
-					} else {
-						console.log("数据库里缺少省份信息或城市信息");
-					}
+					this.privinces = returnData.data.data;
 				})
-				.catch(() => {
-					console.log('载入所有省份和城市信息失败');
+				.catch((error) => {
+					console.log('载入所有省份信息失败');
 				})
 			}, 
-			getUserInfo : function() {
-				this.$ajax.get()
+			//获取城市列表信息
+			getCities : function(pId) {
+				this.$ajax.get('util/provinces/' + pId + '/cities')
 				.then((returnData) => {
-					if(returnData.returnCode > 0){
-						this.user = returnData.user;
-					} else {
-						console.log("数据库里缺少个人信息");
-					}
+					this.cities = returnData.data.data;
 				})
-				.catch(() => {
+				.catch((error) => {
+					console.log('载入城市信息失败');
+				})
+			},
+			getUserInfo : function() {
+				this.$ajax.get('my/profiles')
+				.then((returnData) => {
+					this.user = returnData.data.data;
+				})
+				.catch((error) => {
 					console.log('载入个人信息失败');
 				})
 			},

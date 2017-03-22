@@ -2,7 +2,7 @@ import Vue from 'vue';
 import router from './router';
 import store from './store';
 import App from './App.vue';
-import axios from 'axios'
+import axios from 'axios';
 //import * as filters from './filters/index.js';
 
 //开启debug模式
@@ -14,6 +14,15 @@ require('./css/public.css');
 
 //设置axios基本URL
 axios.defaults.baseURL = 'https://education.lijingye.win/api/';
+//全局加入headers
+axios.interceptors.request.use(function (config) {    // 这里的config包含每次请求的内容
+    if (store.getters.getToken) {
+        config.headers.common['Authorization'] = store.getters.getToken;
+    }
+    return config;
+}, function (err) {
+    return Promise.reject(err);
+});
 //整合axios
 Vue.prototype.$ajax = axios;
 
