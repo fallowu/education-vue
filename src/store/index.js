@@ -11,7 +11,8 @@ const store = new Vuex.Store({
 		userInfo : {
 			'id' : '',
 			'accessToken' : ''
-		}
+		},
+		staticPath : 'https://education.lijingye.win/Education'
 	},
 	actions: {
 		isLogin({commit}) {
@@ -48,6 +49,9 @@ const store = new Vuex.Store({
 		getToken(state) {
 			return state.userInfo.accessToken;
 		},
+		getStaticPath(state) {
+			return state.staticPath;
+		}
 	}
 })
 

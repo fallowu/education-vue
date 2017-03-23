@@ -34,131 +34,45 @@
 									</div>
 								</form>
 
+								<info-form v-if="!canEdit" :user="user" :formGroup="formGroup"></info-form>
 
-								<!-- displayForm -->
-								<form v-if="!canEdit" class="form form-horizontal basic-form">
-									<input type="hidden" name="userId" value="${user.userId}" />
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">昵称</label>
-										<div class="col-sm-9">
-											<span v-if="user.nickName" class="show-field">{{user.nickName}}</span>
-											<span v-else class="show-field grey">暂无昵称</span>
-											<span class="text-danger"></span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">性别</label>
-										<div class="col-sm-9">
-											<span v-if="user.gender" class="show-field">{{user.gender}}</span>
-											<span v-else class="show-field grey">暂无性别信息</span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">个性签名</label>
-										<div class="col-sm-9">
-											<span v-if="user.motto" class="show-field">{{user.motto}}</span>
-											<span v-else class="show-field grey">暂无个性签名</span>
-											<span class="text-danger"></span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">兴趣爱好</label>
-										<div class="col-sm-9">
-											<span v-if="user.hobbies" class="show-field">{{user.hobbies}}</span>
-											<span v-else class="show-field grey">暂无爱好信息</span>
-											<span class="text-danger"></span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">家乡</label>
-										<div class="col-sm-9">
-											<span v-if="user.home" class="show-field">{{user.home}}</span>
-											<span v-else class="show-field grey">暂无家乡信息</span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">生日</label>
-										<div class="col-sm-9">
-											<span v-if="user.birthday" class="show-field">{{user.birthday}}</span>
-											<span v-else class="show-field grey">暂无生日信息</span>						
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">手机</label>
-										<div class="col-sm-9">
-											<span v-if="user.telephone" class="show-field">{{user.telephone}}</span>
-											<span v-else class="show-field grey">暂无手机信息</span>
-											<span class="text-danger"></span>
-										</div>
-									</div>
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">常用邮箱</label>
-										<div class="col-sm-9">
-											<span v-if="user.telephone" class="show-field">{{user.email}}</span>
-											<span v-else class="show-field grey">暂无常用邮箱信息</span>
-											<span class="text-danger"></span>
-										</div>
-									</div>
-								</form>
 
-								<!-- editForm -->
 								<form v-if="canEdit" class="form form-horizontal basic-form">
 									<input type="hidden" name="userId" value="${user.userId}" />
-									<div :class="formGroup">
-										<label class="col-sm-3 control-label">昵称</label>
-										<div class="col-sm-9">
-											<input v-if="user.nickName" type="text" class="form-control" :value="user.nickName" id="nickname" name="nickname" placeholder="请输入昵称">
-											<input v-else type="text" class="form-control" id="nickname" name="nickname" placeholder="请输入昵称" />
-											<span class="text-danger"></span>
-										</div>
-									</div>
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">性别</label>
 										<div class="col-sm-9">
 											<label class="radio-inline " >
-												<input type="radio" name="gender" id="gender-m" value="0" :checked="!user.gender"> 男
+												<input type="radio" name="gender" id="gender-m" value="男" v-model="user.gender"> 男
 											</label>
 											<label class="radio-inline ">
-												<input type="radio" name="gender" id="gender-f" value="1" :checked="user.gender"> 女
+												<input type="radio" name="gender" id="gender-f" value="女" v-model="user.gender"> 女
 											</label>
 										</div>
 									</div>
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">个性签名</label>
 										<div class="col-sm-9">
-											<textarea v-if="user.motto" class="form-control" id="motto" name="motto">{{user.motto}}</textarea>
-											<textarea  v-else class="form-control" id="motto" name="motto" ></textarea>
+											<textarea v-model="user.motto" class="form-control" id="motto" name="motto"></textarea>
 											<span class="text-danger"></span>
 										</div>
 									</div>
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">兴趣爱好</label>
 										<div class="col-sm-9">
-											<input v-if="user.hobbies" type="hidden" id="hobby" name="hobby" :value="user.hobbies"/>
-											<input v-else type="hidden" id="hobby" name="hobby" value=""/>
+											<input type="text" class="form-control" v-model="user.hobbies" name="hobbies" placeholder="请输入兴趣爱好，用空格隔开">
 											<span class="text-danger"></span>
-											<div class="">
-												<div id="hobby-list"></div>
-												<div class="input-group" id="add-hobby">
-													<input type="text" class="form-control" id="new-hobby" placeholder="请输入新的爱好，并用空格隔开">
-													<span class="input-group-btn">
-														<button class="btn btn-info" type="button" id="add-hobby-btn">
-															<i class="glyphicon glyphicon-plus"></i>
-														</button>
-													</span>
-												</div>
-											</div>
 										</div>
 									</div>
 									<div :class="formGroup">
 										<label class="col-sm-3 control-label">家乡</label>
 										<div class="col-sm-9">
-											<select class="form-control" data-id="" id="province" name="homelandP">
-												<option v-for="province in provinces" :value="province.provinceId">{{province.provinceName}}</option>
+											<select @change="changeCities" id="province" class="form-control" v-model="currentProvinceId">
+												<option v-for="province in provinces" :value="province.provinceId">{{province.name}}</option>
 											</select>
 											<span class="">省/直辖市</span>
-											<select class="form-control" data-id="" id="city" name="homelandC">
-												<option v-for="city in cities" :value="city.cityId">{{city.cityName}}</option>
+											<select class="form-control" data-id="" id="city">
+												<option v-for="city in cities" :value="city.cityId">{{city.name}}</option>
 											</select>
 											<span class="">市/区</span>						
 										</div>
@@ -190,13 +104,17 @@
 							</div>
 						</div>
 					</div>
-
 					<div id="latest-published" class="box">
 						<div class="row">
 							<div class="col-md-12">
 								<label class="box-title llb">最新动态</label>
 								<div id="latest-published-list">
-									<p class="loading">载入中，请稍后……</p>
+									<div v-for="tweet in tweetsReverse" class="list-item">
+										<p class="content">
+											{{tweet.content}}
+										</p>
+										<span class="time">{{tweet.time}}</span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -204,54 +122,20 @@
 				</div>
 
 				<div class="col-md-3">
+
 					<div class="simpleInfo-part">
 						<div class="row">
 							<div class="col-md-12">
 								<a href="uploadFace.do">
-									<img v-if="user.faceIcon" src="" alt="">
+									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
 									<img v-else src="" alt="">
 								</a>
 							</div>
 						</div>
 					</div>
 
-					<div class="visitor-part box">
-						<div class="row">
-							<div class="col-sm-12">
-								<label class="box-title">最近访客</label>
-							</div>
-						</div>
-						<div class="row" id="visitor-list">
-							<span v-if="!visitors" class="no-visitor">暂无访客</span>
-							<template v-for="visitor in visitors">
-								<div class="visitor">
-									<img v-if="!visitor.faceIcon || visitor.faceIcon =='' " src="" alt="">
-									<img v-else src="" alt="">
-									<a class="name" target="_blank" :href="visitor.homepage">{{visitor.visitorName}}</a>
-									<span class="time">{{visitor.time}}</span>
-								</div>
-							</template>
-						</div>
-					</div>
-
-					<div class="friend-part box">
-						<div class="row">
-							<div class="col-sm-12">
-								<label class="box-title">好友列表</label>
-								<a href="friend.do">更多</a>
-							</div>
-						</div>
-						<div class="row" id="friend-list">
-							<span v-if="!friends" class="no-friend">暂无好友</span>
-							<template v-for="friend in friends">
-								<div class="friend">
-									<img v-if="!friend.faceIcon || friend.faceIcon =='' " src="" alt="">
-									<img v-else src="" alt="">
-									<a class="name" target="_blank" :href="friend.homepage">{{friend.userName}}</a>
-								</div>
-							</template>
-						</div>
-					</div>
+					<visitors-list :visitors="visitors"></visitors-list>
+					<friends-list :friends="friends"></friends-list>
 				</div>
 			</div>
 		</div>
@@ -455,38 +339,58 @@
 </style>
 
 <script>
-	import nHeader from '../components/nHeader.vue';
-	import nFooter from '../components/nFooter.vue';
+	import nHeader from '../components/nHeader.vue'
+	import nFooter from '../components/nFooter.vue'
+	import infoForm from '../components/infoForm.vue'
+	import friendsList from '../components/friendsList.vue'
+	import visitorsList from '../components/visitorsList.vue'
 	export default {
 		data : function() {
 			return {
 				provinces : [],
 				cities : [],
+				currentProvinceId : '',
 				canEdit : false,
 				artlist : [],
-				visitors : [],
-				friends : [],
 				user : {},
+				tweets : [],
 				formGroup : {
 					'form-group' : true,
 					'form-margin' : false
 				}
 			}
 		},
-		mounted : function () {
+		computed : {
+			path : function() {
+				return this.$store.getters.getStaticPath;
+			}, 
+			tweetsReverse : function() {
+				return this.tweets.reverse();
+			}
+
+		// 	province : function() {
+		// 		let home = this.user.home,
+		// 			pro = home.substr(0, home.indexOf(' '));
+		// 		return pro === '' ? home : pro;
+		// 	},
+		// 	city : function() {
+		// 		let home = this.user.home,
+		// 			pro = home.substr(0, home.indexOf(' '));
+		// 		return pro === '' ? '' : home.substr(home.indexOf(' '));
+		// 	}
+	},
+	mounted : function () {
 			// this.getPC();
-			this.provinces.push({ 
-				"provinceId": 1,
-				"provinceName": "上海"
-			});
 			this.getUserInfo();
+			this.getProvinces();
+			this.getTweets(1);
 		},
 		methods : {
 			//获取省份列表信息
 			getProvinces : function() {
 				this.$ajax.get('util/provinces')
 				.then((returnData) => {
-					this.privinces = returnData.data.data;
+					this.provinces = returnData.data.data;
 				})
 				.catch((error) => {
 					console.log('载入所有省份信息失败');
@@ -497,6 +401,8 @@
 				this.$ajax.get('util/provinces/' + pId + '/cities')
 				.then((returnData) => {
 					this.cities = returnData.data.data;
+					//todo
+					console.log(this.cities);
 				})
 				.catch((error) => {
 					console.log('载入城市信息失败');
@@ -511,17 +417,36 @@
 					console.log('载入个人信息失败');
 				})
 			},
+			getTweets : function(page) {
+				this.$ajax.get('my/tweets?page=' + page)
+				.then((returnData) => {
+					this.tweets = returnData.data.data;
+				})
+				.catch((error) => {
+					console.log('载入动态信息失败')
+				})
+			},
+			changeCities : function() {
+				let id = this.currentProvinceId;
+				this.getCities(id);
+			},
 			editInfo : function() {
 				this.canEdit = true;
 				this.formGroup['form-margin'] = true;
 			},
 			saveInfo : function() {
 				this.canEdit = false;
+			},
+			cancelInfo : function() {
+				this.canEdit = false;
 			}
 		},
 		components : {
 			nHeader,
-			nFooter
+			nFooter,
+			infoForm,
+			friendsList,
+			visitorsList
 		}
 	}
 </script>
