@@ -7,11 +7,11 @@ const store = new Vuex.Store({
 	state: {
 		// 页面打开默认设置登录状态为否
 		isLogin : false,
-		// 保存登录信息
-		userInfo : {
-			'id' : '',
-			'accessToken' : ''
-		},
+		// 保存用户信息
+		userInfo : {},
+		//token
+		accessToken : '',
+		//静态资源基础URL
 		staticPath : 'https://education.lijingye.win/Education'
 	},
 	actions: {
@@ -23,6 +23,9 @@ const store = new Vuex.Store({
 		},
 		setUserInfo({commit}, userInfo) {
 			commit('SETUSERINFO', userInfo);
+		},
+		setToken({commit}, token) {
+			commit('SETTOKEN', token);
 		}
 	},
 	mutations: {
@@ -35,8 +38,10 @@ const store = new Vuex.Store({
 			state.isLogin = false;
 		},
 		SETUSERINFO (state, userInfo) {
-			state.userInfo.id = userInfo.id;
-			state.userInfo.accessToken = userInfo.accessToken;
+			state.userInfo = userInfo;
+		},
+		SETTOKEN (state, token) {
+			state.accessToken = token;
 		}
 	},
 	getters: {
@@ -47,10 +52,13 @@ const store = new Vuex.Store({
 			return state.userInfo;
 		},
 		getToken(state) {
-			return state.userInfo.accessToken;
+			return state.accessToken;
 		},
 		getStaticPath(state) {
 			return state.staticPath;
+		},
+		getFaceIcon(state) {
+			return state.userInfo.faceIcon;
 		}
 	}
 })

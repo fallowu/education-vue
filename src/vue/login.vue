@@ -222,14 +222,11 @@
 				.then((response) => {
 					//成功登陆改变登陆状态
 					this.$store.dispatch('isLogin');
-					const userInfo = {
-						'id' : this.userId,
-						'accessToken' : response.data.data.access_token
-					}
-					console.log(userInfo);
-					this.$store.dispatch('setUserInfo', userInfo);
-					//跳转个人主页
-					this.$router.push('/personal');
+					const token = response.data.data.access_token;
+					console.log(token);
+					this.$store.dispatch('setToken', token);
+					//跳转首页
+					this.$router.push('/homepage');
 				})
 				.catch((error) => {
 					console.log(error);

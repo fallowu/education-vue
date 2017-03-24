@@ -134,8 +134,8 @@
 						</div>
 					</div>
 
-					<visitors-list :visitors="visitors"></visitors-list>
-					<friends-list :friends="friends"></friends-list>
+					<visitors-list></visitors-list>
+					<friends-list></friends-list>
 				</div>
 			</div>
 		</div>
@@ -352,7 +352,7 @@
 				currentProvinceId : '',
 				canEdit : false,
 				artlist : [],
-				user : {},
+				// user : {},
 				tweets : [],
 				formGroup : {
 					'form-group' : true,
@@ -364,6 +364,9 @@
 			path : function() {
 				return this.$store.getters.getStaticPath;
 			}, 
+			user : function() {
+				return this.$store.getters.getUserInfo;
+			},
 			tweetsReverse : function() {
 				return this.tweets.reverse();
 			}
@@ -381,7 +384,7 @@
 	},
 	mounted : function () {
 			// this.getPC();
-			this.getUserInfo();
+			// this.getUserInfo();
 			this.getProvinces();
 			this.getTweets(1);
 		},
@@ -408,15 +411,15 @@
 					console.log('载入城市信息失败');
 				})
 			},
-			getUserInfo : function() {
-				this.$ajax.get('my/profiles')
-				.then((returnData) => {
-					this.user = returnData.data.data;
-				})
-				.catch((error) => {
-					console.log('载入个人信息失败');
-				})
-			},
+			// getUserInfo : function() {
+			// 	this.$ajax.get('my/profiles')
+			// 	.then((returnData) => {
+			// 		this.user = returnData.data.data;
+			// 	})
+			// 	.catch((error) => {
+			// 		console.log('载入个人信息失败');
+			// 	})
+			// },
 			getTweets : function(page) {
 				this.$ajax.get('my/tweets?page=' + page)
 				.then((returnData) => {
