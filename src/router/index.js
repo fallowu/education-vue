@@ -33,9 +33,9 @@ const classPage = resolve => {
     });
 };
 
-const course = resolve => {
-    require.ensure(['../vue/course.vue'], () => {
-        resolve(require('../vue/course.vue'));
+const lesson = resolve => {
+    require.ensure(['../vue/lesson.vue'], () => {
+        resolve(require('../vue/lesson.vue'));
     });
 };
 
@@ -69,9 +69,9 @@ const routes = [{
         name: 'courseTable',
         component: courseTable
     }, {
-        path: '/course',
-        name: 'course',
-        component: course
+        path: '/lesson:id',
+        name: 'lesson',
+        component: lesson
     }, {
         path: '/classPage',
         name: 'classPage',

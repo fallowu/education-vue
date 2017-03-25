@@ -19,7 +19,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a @click="toggleDropDown" href="javascript" class="dropdown-toggle">
+                        <a @click="toggleDropDown" href="javascript:;" class="dropdown-toggle">
                             <i class="glyphicon glyphicon-user"></i>
                             <span id="username">{{userName}}</span>
                             <input type='hidden' id="curId" />

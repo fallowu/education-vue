@@ -71,7 +71,7 @@
 										<div class="col-sm-11">
 											<a href=""><label class="name">{{tweet.userName}}</label></a>
 											分享了一件新鲜事
-											<p class="content">
+											<p v-html="tweet.content" class="content">
 												{{tweet.content}}
 											</p>
 											<span class="time">{{tweet.time}}</span>
