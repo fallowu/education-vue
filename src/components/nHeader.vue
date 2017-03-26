@@ -29,7 +29,7 @@
                             <li><a href="" id="psd-change" data-toggle="modal" data-target="#change-psd">
                                 <i class="glyphicon glyphicon-pencil"></i> 修改密码</a>
                             </li>
-                            <li><a href=""><i class="glyphicon glyphicon-off"></i> 注销</a></li>
+                            <li><a @click="logout" href=""><i class="glyphicon glyphicon-off"></i> 注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -52,6 +52,10 @@
         methods : {
             toggleDropDown : function() {
                 this.dropDown = !this.dropDown;
+            },
+            logout : function() {
+                this.$store.dispatch('signOut');
+                this.$router.push('/login');
             }
         }
     }

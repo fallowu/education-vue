@@ -3,6 +3,22 @@
 		<n-header></n-header>
 		<div class="container main">
 			<div class="row">
+				<div class="col-md-3">
+
+					<div class="simpleInfo-part">
+						<div class="row">
+							<div class="col-md-12">
+								<a href="uploadFace.do">
+									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
+									<img v-else src="" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<visitors-list></visitors-list>
+					<friends-list :isSelf="true"></friends-list>
+				</div>
 				<div class="col-md-9">
 					<div class="basic-info box">
 						<div class="row">
@@ -13,33 +29,30 @@
 									<a v-if="canEdit" href="javascript:void(0);" class="btn btn-xs" @click="saveInfo"><i class="glyphicon glyphicon-floppy-save"></i></a>
 									<a v-if="canEdit" href="javascript:void(0);" class="btn btn-xs" @click="cancelInfo"><i class="glyphicon glyphicon-remove-circle"></i></a>
 								</span>
-								<form class="form form-horizontal" id="college-form" method="POST">
-									<div :class="formGroup">
+
+								<info-form v-if="!canEdit" :user="user"></info-form>
+
+								<form v-if="canEdit" class="form form-horizontal basic-form">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">姓名</label>
 										<div class="col-sm-9">
 											<span class="show-field">{{user.name}}</span>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">学号</label>
 										<div class="col-sm-9">
 											<span class="show-field">{{user.id}}</span>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">院系</label>
 										<div class="col-sm-9">
 											<span class="show-field">{{user.depart}}</span>
 										</div>
 									</div>
-								</form>
 
-								<info-form v-if="!canEdit" :user="user" :formGroup="formGroup"></info-form>
-
-
-								<form v-if="canEdit" class="form form-horizontal basic-form">
-									<input type="hidden" name="userId" value="${user.userId}" />
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">性别</label>
 										<div class="col-sm-9">
 											<label class="radio-inline " >
@@ -50,21 +63,21 @@
 											</label>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">个性签名</label>
 										<div class="col-sm-9">
 											<textarea v-model="user.motto" class="form-control" id="motto" name="motto"></textarea>
 											<span class="text-danger"></span>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">兴趣爱好</label>
 										<div class="col-sm-9">
 											<input type="text" class="form-control" v-model="user.hobbies" name="hobbies" placeholder="请输入兴趣爱好，用空格隔开">
 											<span class="text-danger"></span>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">家乡</label>
 										<div class="col-sm-9">
 											<select @change="changeCities" id="province" class="form-control" v-model="currentProvinceId">
@@ -77,14 +90,14 @@
 											<span class="">市/区</span>						
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">生日</label>
 										<div class="col-sm-9">
 											<input v-if="user.birthday" type="date" class="form-control" :value="user.birthday" id="birthday" name="birthday" />
 											<input v-else type="date" class="form-control" id="birthday" name="birthday" />
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">手机</label>
 										<div class="col-sm-9">
 											<input v-if="user.telephone" type="text" class="form-control" :value="user.telephone" id="telephone" name="telephone" placeholder="请输入手机信息" />
@@ -92,7 +105,7 @@
 											<span class="text-danger"></span>
 										</div>
 									</div>
-									<div :class="formGroup">
+									<div class="form-group">
 										<label class="col-sm-3 control-label">常用邮箱</label>
 										<div class="col-sm-9">
 											<input v-if="user.telephone" type="text" class="form-control" :value="user.email" id="email" name="email" placeholder="请输入常用邮箱信息" />
@@ -101,6 +114,7 @@
 										</div>
 									</div>
 								</form>
+
 							</div>
 						</div>
 					</div>
@@ -121,22 +135,7 @@
 					</div>
 				</div>
 
-				<div class="col-md-3">
-
-					<div class="simpleInfo-part">
-						<div class="row">
-							<div class="col-md-12">
-								<a href="uploadFace.do">
-									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
-									<img v-else src="" alt="">
-								</a>
-							</div>
-						</div>
-					</div>
-
-					<visitors-list></visitors-list>
-					<friends-list></friends-list>
-				</div>
+				
 			</div>
 		</div>
 		<n-footer></n-footer>
@@ -165,9 +164,6 @@
 		form {
 			margin-bottom: 12px;
 			.form-group {
-				margin-bottom: 0;
-			}
-			.form-group.form-margin {
 				margin-bottom: 8px;
 			}
 			.show-field{
@@ -351,13 +347,8 @@
 				cities : [],
 				currentProvinceId : '',
 				canEdit : false,
-				artlist : [],
 				// user : {},
-				tweets : [],
-				formGroup : {
-					'form-group' : true,
-					'form-margin' : false
-				}
+				tweets : []
 			}
 		},
 		computed : {
@@ -435,7 +426,6 @@
 			},
 			editInfo : function() {
 				this.canEdit = true;
-				this.formGroup['form-margin'] = true;
 			},
 			saveInfo : function() {
 				this.canEdit = false;

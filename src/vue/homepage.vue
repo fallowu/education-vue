@@ -3,7 +3,22 @@
 		<n-header></n-header>
 		<div class="container main">
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-3">
+					<div class="simpleInfo-part">
+						<div class="row">
+							<div class="col-md-12">
+								<a href="uploadFace.do">
+									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
+									<img v-else src="" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+					<visitors-list></visitors-list>
+					<friends-list :isSelf="true"></friends-list>
+				</div>
+
+				<div class="col-md-9 publish-well">
 					<div class="publish-part">
 						<form id="publish-form" method="POST" ENCTYPE="multipart/form-data">
 							<input type="hidden" name="" value="" >
@@ -12,19 +27,20 @@
 									<textarea v-model="tweetContent" name="content" id="content" class="form-control" placeholder="说点新鲜事儿吧~"></textarea>
 								</div>
 							</div>
-
 							<div class="row" id="publish-action">
 								<div class="col-md-10">
-									<a class="face-trigger">
-										<img src="">
+									<a @click="faceToggle" class="face-trigger">
+										<img :src="path + '/resource/js/rich-text/img/face-logo.gif'">
 									</a>
-									<div class="face-panel" tabindex="1">
-										<table><tbody></tbody></table>
+									<div v-if="facePanelToggle" class="face-panel">
+										<table><tbody>
+											<tr><td>111</td></tr>
+										</tbody></table>
 									</div>
 									<a class="file-trigger" @click="fileToggle">
 										<i class="glyphicon glyphicon-paperclip"></i>
 									</a>
-									<div v-if="filePanelToggle" class="file-panel" tabindex="1" data-number='0'>
+									<div v-if="filePanelToggle" class="file-panel">
 										<a class="btn btn-sm btn-success add-file">
 											<i class="glyphicon glyphicon-plus"></i> 添加文件
 										</a>
@@ -33,21 +49,17 @@
 										<ul class='imgs'></ul>
 										<ul class='others'></ul>
 										<p class="text-danger"><i class="glyphicon glyphicon-exclamation-sign"></i> 添加文件失败</p>
-
 									</div>
-
 									<span id="publish-msg">还能输入<i id="rest-num">{{wordsLeft}}</i>个字</span>
 								</div>
 								<div class="col-md-2">
-									<button class="btn btn-danger" id="publish-btn" disabled>
-										<i class="glyphicon glyphicon-hand-up"></i> 发&nbsp;布
-									</button>
+									<a @click="postTweet" class="btn btn-danger" id="publish-btn">
+										发&nbsp;布
+									</a>
 								</div>
 							</div>
-							
 						</form>
 					</div> 
-
 
 					<div class="published-part">
 						<div class="row read-option">
@@ -87,25 +99,9 @@
 								
 							</ul>
 						</nav>
-					</div> 
-
-
-
-				</div>
-				<div class="col-md-3">
-					<div class="simpleInfo-part">
-						<div class="row">
-							<div class="col-md-12">
-								<a href="uploadFace.do">
-									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
-									<img v-else src="" alt="">
-								</a>
-							</div>
-						</div>
 					</div>
-					<visitors-list></visitors-list>
-					<friends-list></friends-list>
 				</div>
+				
 			</div>
 		</div>
 		<n-footer></n-footer>
@@ -122,8 +118,10 @@
 			return {
 				user: {},
 				filePanelToggle: false,
+				facePanelToggle: false,
 				tweetContent : '',
-				tweets : []
+				tweets : [],
+				file : []
 			}
 		},
 		computed : {
@@ -138,14 +136,17 @@
 				return rest < 0 ? 0 : rest;
 			}
 		},
+
 		mounted : function() {
 			this.getUserInfo();
 			this.getTweets(1);
 		},
 		methods : {
 			fileToggle : function() {
-				console.log(this.filePanelToggle);
 				this.filePanelToggle = !this.filePanelToggle;
+			},
+			faceToggle : function() {
+				this.facePanelToggle = !this.facePanelToggle;
 			},
 			getUserInfo : function() {
 				this.$ajax.get('my/profiles')
@@ -160,11 +161,24 @@
 			getTweets : function(page) {
 				this.$ajax.get('my/friends/tweets?page=' + page)
 				.then((returnData) => {
-					console.log(returnData.data.data);
-					this.tweets = this.tweets.concat(returnData.data.data);
+					this.tweets = returnData.data.data;
 				})
 				.catch((error) => {
 					console.log('载入动态失败');
+				})
+			},
+			postTweet : function() {
+				this.$ajax.post('my/tweets', {
+					content : this.tweetContent,
+					file : []
+				})
+				.then((returnData) => {
+					this.tweetContent = '';
+					// console.log(returnData.data);
+					this.getTweets(1);
+				})
+				.catch((error) => {
+					console.log('发布动态失败')
 				})
 			}
 		},
@@ -177,14 +191,52 @@
 	}
 </script>
 <style lang="sass">
-	/* Publish Part BEGIN */
-	div.publish-part{
-		padding: 0.9em;
-		background-color: #B6DBED;
-		border: 1px solid #82B7E4;
+	@import '../scss/common.scss';
+	.simpleInfo-part{
+		/*background-image: url("../img/img-bg.jpg");*/
+		background-color: transparent;
+		background-repeat: no-repeat;
 	}
-	div.publish-part textarea{
-		height: 5.3em;	
+	.simpleInfo-part img{
+		width: 14em;
+		border: 1px solid #ccc;
+		border-radius: 50%;
+		margin: 12%;
+	}
+	.simpleInfo-part img:hover{
+		border: 3px solid #ECF9FF;
+	}
+
+	@media screen and (max-width: 1200px) and (min-width: 992px){
+		.simpleInfo-part img{
+			width:12em;
+			margin: 10%;
+		}
+	}
+	@media screen and (max-width: 992px){
+		.simpleInfo-part{
+			display: none;
+			margin-top: 10px;
+		}
+		.simpleInfo-part img{
+			margin-top: 1.8em;
+			margin-left: 1.8em;
+		}
+	}
+	.publish-well {
+		background-color: #fafafa;
+		padding: 0 30px;
+		@include bordered(1px, 6px);
+		@include shadowed(10px);
+	}
+	#publish-btn {
+		width: 80px;
+	}
+	.publish-part{
+		padding: 30px 12px 12px 12px;
+		textarea{
+			height: 5.3em;	
+		}
 	}
 	#publish-action{
 		margin-top: 0.5em;
@@ -195,7 +247,7 @@
 	}
 	#publish-msg{
 		color: #888;
-		font-size: 17px;
+		font-size: 16px;
 		font-family: "SimHei";
 		padding-top: 7px;
 		display: inline-block;
@@ -213,68 +265,37 @@
 	#publish-action button{
 		width: 100%;
 	}
-/* #select-btn{
-	padding: 0;
-}
-#select-btn .btn-group{
-	padding: 0;
-	width: 100%;
-}
-#select-btn .btn-group .dropdown-toggle{
-	background-color: #B6DBED;
-	box-shadow: none;
-	border: 0;
-	color: #428bca; 
-}
-#select-btn .btn-group .dropdown-toggle .caret{
-	border-top-color: #428bca;
-	border-bottom-color: #428bca;
-}
-#select-btn .btn-group .dropdown-toggle:hover{
-	color: #124067;
-}
-#select-btn .btn-group .dropdown-toggle:hover .caret{
-	border-top-color: #124067;
-	border-bottom-color: #124067;
-}
-#select-btn .dropdown-menu{
-	min-width: 120px;
-}
-#select-btn .btn-group .btn, 
-#select-btn .dropdown-menu > li > a{
-	text-align: right;
-} */
-@media screen and (max-width: 992px) and (min-width: 600px){
-	#publish-action .col-md-8{
-		width: 65.22222222222222%;
-		display: inline-block;
+	@media screen and (max-width: 992px) and (min-width: 600px){
+		#publish-action .col-md-8{
+			width: 65.22222222222222%;
+			display: inline-block;
+		}
+		#publish-action .col-md-2 {
+			width: 16.666666666666664%;
+			display: inline-block;
+		}
 	}
-	#publish-action .col-md-2 {
-		width: 16.666666666666664%;
-		display: inline-block;
+	@media screen and (max-width: 600px) and (min-width: 450px){
+		#publish-action .col-md-8{
+			width: 58.22222222222222%;
+			display: inline-block;
+		}
+		#publish-action .col-md-2 {
+			width: 19.888888888888884%;
+			display: inline-block;
+		}
+		#publish-action .col-md-2 ul.dropdown-menu{
+			margin-left: -20px;
+		}
 	}
-}
-@media screen and (max-width: 600px) and (min-width: 450px){
-	#publish-action .col-md-8{
-		width: 58.22222222222222%;
-		display: inline-block;
-	}
-	#publish-action .col-md-2 {
-		width: 19.888888888888884%;
-		display: inline-block;
-	}
-	#publish-action .col-md-2 ul.dropdown-menu{
-		margin-left: -20px;
-	}
-}
-@media screen and (max-width: 450px){
-	#publish-action .col-md-8{
-		width: 100%;
-		display: inline-block;
-	}
-	#publish-action .col-md-2{
-		width: 49%;
-		display: inline-block;
+	@media screen and (max-width: 450px){
+		#publish-action .col-md-8{
+			width: 100%;
+			display: inline-block;
+		}
+		#publish-action .col-md-2{
+			width: 49%;
+			display: inline-block;
 	}/* 
 	#select-btn .btn-group .dropdown-toggle{
 		margin-left: 5px;
@@ -284,7 +305,6 @@
 		margin-left: 25%;
 	}
 }
-/* Publish Part END */
 
 #publish-fail .modal-header, #reply-fail .modal-header{
 	border-bottom: 0;
@@ -294,9 +314,7 @@
 	text-align: center;
 }
 /* Published Part BEGIN */
-.published-part{
-	margin-top: 20px;
-}
+
 .published-part .read-option span{
 	display: inline-block;
 	padding: 4px 16px;
@@ -320,8 +338,7 @@
 	display: block;
 }
 .publishment{
-	background-color: #fff;
-	border: 1px solid #ccc;
+	border-top: 1px solid $gray;
 	margin: 10px 0 0 0;
 	padding: 10px 10px 0 10px;
 	/* overflow: hidden; */
@@ -459,5 +476,24 @@
 }
 #topic-content-modal .publishment .published{
 	margin-bottom: 5px;
+}
+
+.file-panel a.add-file + span{
+	color: #ccc;
+	margin-left: 0.4em;
+}
+.file-panel input{
+	position: absolute;
+	margin-top: -26px;
+	opacity: 0;
+	width: 85px;
+}
+.file-panel, .face-panel {
+	position: absolute;
+	background-color: #fff;
+	z-index: 1;
+	padding: 6px;
+	border: 1px solid #ccc;
+	border-radius: 4px; 
 }
 </style>

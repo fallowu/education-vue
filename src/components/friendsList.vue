@@ -11,7 +11,7 @@
 				<div v-for="friend in friends" class="friend">
 					<img v-if="friend.faceIcon" :src="path + friend.faceIcon" alt="">
 					<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
-					<a class="name" target="_blank" href="">{{friend.name}}</a>
+					<router-link :to="{name: 'home', query:{id: friend.id}}" class="name">{{friend.name}}</router-link>
 				</div>
 			
 		</div>
@@ -25,14 +25,28 @@
 				friends : []
 			}
 		},
+		props : {
+			isSelf : true,
+			userId : ''
+		},
 		mounted : function() {
 			this.getFriends();
 		},
 		methods : {
 			getFriends : function() {
-				this.$ajax.get('my/friends?page=1')
+				var url = '';
+				if(this.isSelf === true) {
+					url = 'my/friends?page=1';
+				} else {
+					url = 'users/' + this.userId + '/friends?page=1'
+				}
+				this.$ajax.get(url)
 				.then((returnData) => {
 					this.friends = returnData.data.data;
+					if(this.friends.length > 9) {
+						this.friends.splice(8, 3);
+					}
+					
 				})
 				.catch((error) => {
 					console.log('载入好友信息失败')
@@ -48,39 +62,6 @@
 </script>
 
 <style lang="sass">
-	.simpleInfo-part{
-	/*background-image: url("../img/img-bg.jpg");*/
-	background-color: #fcfcfc;
-	background-repeat: no-repeat;
-	border: 1px solid #ccc;
-}
-.simpleInfo-part img{
-	width: 14em;
-	border: 1px solid #ccc;
-	border-radius: 50%;
-	margin: 12%;
-}
-.simpleInfo-part img:hover{
-	border: 3px solid #ECF9FF;
-}
-
-@media screen and (max-width: 1200px) and (min-width: 992px){
-	.simpleInfo-part img{
-		width:12em;
-		margin: 10%;
-	}
-}
-@media screen and (max-width: 992px){
-	.simpleInfo-part{
-		display: none;
-		margin-top: 10px;
-	}
-	.simpleInfo-part img{
-		margin-top: 1.8em;
-		margin-left: 1.8em;
-	}
-}
-/*  Simple Info Part END */
 
 /* Visitor Part & friend Part  BEGIN */
 .friend-part{
@@ -93,6 +74,7 @@
 
 #friend-list{
 	margin: 3px 1px 0 9px;
+	padding: 10px 0;
 	.friend{
 		padding-right: 0;
 		float: left;
@@ -104,6 +86,7 @@
 #friend-list .friend img{
 	border: 1px solid #ccc;
 	width: 75px;
+	border-radius: 50%;
 }
 #friend-list .friend a.name, 
 #friend-list .friend span{

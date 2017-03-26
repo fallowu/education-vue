@@ -2,9 +2,9 @@
 	<router-view></router-view>
 </template>
 <style lang="sass">
-	.test {
-		color: blue;
-	}
+body{
+	background-color: #eee;
+}
 </style>
 <script>
 	

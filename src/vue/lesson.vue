@@ -8,8 +8,9 @@
 						<label><router-link to="/courseTable">我的课程</router-link></label>
 						&gt; <span class="courseName">{{lesson.name}}</span> &gt;
 						<span>班级空间</span>
-						<a href="" class="switch-btn">
-							<i class="glyphicon glyphicon-arrow-right"></i>进入课程空间</a>
+						<router-link :to="{name: 'course', params : {info: lesson}, query:{id: lesson.course}}" class="switch-btn">
+							<i class="glyphicon glyphicon-arrow-right"></i>进入课程空间
+						</router-link>
 						</div>
 					</div>
 				</div>
@@ -203,19 +204,26 @@
 				topics : [],
 				sources : [],
 				students : [],
+				lesson : {},
 				//激活的信息内容
 				activeContent : 'assignments'
 			}
 		},
 		computed : {
-			lesson : function() {
-				return this.$route.params.info;
-			},
 			path : function() {
 				return this.$store.getters.getStaticPath;
+			},
+			lessonId : function () {
+				return this.$route.params.id;
 			}
 		},
+		created : function() {
+			this.getLessonInfo();
+
+		},
 		mounted : function() {
+			// console.log(this.lessonId)
+			
 			this.getAssignments(1);
 			this.getPpts(1);
 			this.getTopics(1);
@@ -223,8 +231,19 @@
 			this.getStudents(1);
 		},
 		methods : {
+			getLessonInfo : function() {
+				this.$ajax.get('lessons/' + this.lessonId)
+				.then((returnData) => {
+					this.lesson = returnData.data.data;
+					console.log(this.lesson);
+					console.log(this.lessonId)
+				})
+				.catch((error) => {
+					console.log('载入课程信息失败');
+				})
+			},
 			getAssignments : function(page) {
-				this.$ajax.get('lessons/' + this.lesson.id + '/assignments?page=' + page)
+				this.$ajax.get('lessons/' + this.lessonId + '/assignments?page=' + page)
 				.then((returnData) => {
 					this.assignments = this.assignments.concat(returnData.data.data);
 				})
@@ -233,7 +252,7 @@
 				})
 			},
 			getPpts : function(page) {
-				this.$ajax.get('lessons/' + this.lesson.id + '/ppts?page=' + page)
+				this.$ajax.get('lessons/' + this.lessonId + '/ppts?page=' + page)
 				.then((returnData) => {
 					this.ppts = this.ppts.concat(returnData.data.data);
 				})
@@ -242,7 +261,7 @@
 				})
 			},
 			getTopics : function(page) {
-				this.$ajax.get('lessons/' + this.lesson.id + '/topics?page=' + page)
+				this.$ajax.get('lessons/' + this.lessonId + '/topics?page=' + page)
 				.then((returnData) => {
 					this.topics = this.topics.concat(returnData.data.data);
 				})
@@ -251,7 +270,7 @@
 				})
 			},
 			getSources : function(page) {
-				this.$ajax.get('lessons/' + this.lesson.id + '/sources?page=' + page)
+				this.$ajax.get('lessons/' + this.lessonId + '/sources?page=' + page)
 				.then((returnData) => {
 					this.sources = this.sources.concat(returnData.data.data);
 				})
@@ -260,7 +279,7 @@
 				})
 			},
 			getStudents : function(page) {
-				this.$ajax.get('lessons/' + this.lesson.id + '/students?page=' + page)
+				this.$ajax.get('lessons/' + this.lessonId + '/students?page=' + page)
 				.then((returnData) => {
 					this.students = this.students.concat(returnData.data.data);
 				})

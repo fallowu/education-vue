@@ -36,11 +36,14 @@ const store = new Vuex.Store({
 		// 退出登录
 		SIGNOUT (state) {
 			state.isLogin = false;
+			localStorage.removeItem('token');
+			state.accessToken = '';
 		},
 		SETUSERINFO (state, userInfo) {
 			state.userInfo = userInfo;
 		},
 		SETTOKEN (state, token) {
+			localStorage.token = token;
 			state.accessToken = token;
 		}
 	},

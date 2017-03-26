@@ -31,6 +31,9 @@
 				this.$ajax.get('my/visitors?page=1')
 				.then((returnData) => {
 					this.visitors = returnData.data.data;
+					if(this.visitors.length > 9) {
+						this.visitors.splice(8, 3);
+					}
 				})
 				.catch((error) => {
 					console.log('载入访客信息失败')
@@ -49,40 +52,6 @@
 </script>
 
 <style lang="sass">
-	.simpleInfo-part{
-		/*background-image: url("../img/img-bg.jpg");*/
-		background-color: #fcfcfc;
-		background-repeat: no-repeat;
-		border: 1px solid #ccc;
-	}
-	.simpleInfo-part img{
-		width: 14em;
-		border: 1px solid #ccc;
-		border-radius: 50%;
-		margin: 12%;
-	}
-	.simpleInfo-part img:hover{
-		border: 3px solid #ECF9FF;
-	}
-
-	@media screen and (max-width: 1200px) and (min-width: 992px){
-		.simpleInfo-part img{
-			width:12em;
-			margin: 10%;
-		}
-	}
-	@media screen and (max-width: 992px){
-		.simpleInfo-part{
-			display: none;
-			margin-top: 10px;
-		}
-		.simpleInfo-part img{
-			margin-top: 1.8em;
-			margin-left: 1.8em;
-		}
-	}
-	/*  Simple Info Part END */
-
 	/* Visitor Part & friend Part  BEGIN */
 	.visitor-part{
 		margin-top: 10px;
@@ -93,6 +62,7 @@
 	}
 	#visitor-list{
 		margin: 3px 1px 0 9px;
+		padding: 10px 0;
 	}
 	#visitor-list .visitor{
 		padding-right: 0;
@@ -103,6 +73,7 @@
 	#visitor-list .visitor img{
 		border: 1px solid #ccc;
 		width: 75px;
+		border-radius: 50%;
 	}
 	#visitor-list .visitor a.name,
 	#visitor-list .visitor span{

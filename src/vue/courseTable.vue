@@ -4,19 +4,22 @@
 		<div class="container main">
 			<h3>课程列表</h3>
 			<div class="row">
-				<div v-for="lesson in lessons" class="col-md-3 lesson-item">
-					<p class="lesson-item-term">
-						<span>{{lesson.term.substring(0, 9)}}</span>&nbsp;学年&nbsp;&nbsp;<span>{{lesson.term.substring(11, 13)}}</span>&nbsp;学期
-					</p>
-					<router-link :to="{name: 'lesson', params:{id: lesson.id, info: lesson}}" >{{lesson.name}}</router-link>
-					<p class="lesson-item-teacher">教师：{{lesson.teacher}}</p>
-					<span>周课时：{{lesson.weekTime}}</span>
-					<span>&nbsp;学分：{{lesson.credit}}</span>
+				<div v-for="lesson in lessons" class="col-md-3">
+					<div class="lesson-item">
+						<p class="lesson-item-term">
+							<span>{{lesson.term.substring(0, 9)}}</span>&nbsp;学年&nbsp;&nbsp;<span>{{lesson.term.substring(11, 13)}}</span>&nbsp;学期
+						</p>
+						<router-link :to="{name: 'lesson', params:{id: lesson.id}}" >{{lesson.name}}</router-link>
+						<p class="lesson-item-teacher">教师：{{lesson.teacher}}</p>
+						<span>周课时：{{lesson.weekTime}}</span>
+						<span>&nbsp;学分：{{lesson.credit}}</span>
+					</div>
+					
 				</div>
 			</div>
-</div> <!-- /container -->
-<n-footer></n-footer>
-</div>
+		</div> <!-- /container -->
+		<n-footer></n-footer>
+	</div>
 </template>
 
 <script>
@@ -62,10 +65,16 @@
 
 <style lang="sass">
 	@import '../scss/common.scss';
+	h3 {
+		margin-top: 0px;
+		margin-bottom: 20px;
+	}
 	.lesson-item {
-		border: 2px solid $blue-lighter;
-		border-radius: 6px;
+		@include bordered(1px, 6px);
+		@include shadowed(10px);
+		margin-bottom: 20px;
 		padding: 15px;
+		background-color: #fafafa;
 		.lesson-item-term span {
 			font-weight: bold;
 			color: $blue;

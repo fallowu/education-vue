@@ -27,15 +27,15 @@ const courseTable = resolve => {
     });
 };
 
-const classPage = resolve => {
-    require.ensure(['../vue/classPage.vue'], () => {
-        resolve(require('../vue/classPage.vue'));
-    });
-};
-
 const lesson = resolve => {
     require.ensure(['../vue/lesson.vue'], () => {
         resolve(require('../vue/lesson.vue'));
+    });
+};
+
+const course = resolve => {
+    require.ensure(['../vue/course.vue'], () => {
+        resolve(require('../vue/course.vue'));
     });
 };
 
@@ -51,44 +51,78 @@ const friend = resolve => {
     });
 };
 
+const home = resolve => {
+    require.ensure(['../vue/home.vue'], () => {
+        resolve(require('../vue/home.vue'));
+    });
+};
+
 
 const routes = [{
-        path: '/',
+        path: '/login',
         name: 'login',
         component: login
     }, {
         path: '/homepage',
         name: 'homepage',
+        meta : {
+            requireAuth : true
+        },
         component: homepage
     }, {
         path: '/personal',
         name: 'personal',
+        meta : {
+            requireAuth : true
+        },
         component: personal
     }, {
         path: '/courseTable',
         name: 'courseTable',
+        meta : {
+            requireAuth : true
+        },
         component: courseTable
     }, {
-        path: '/lesson:id',
+        path: '/lesson/:id',
         name: 'lesson',
+        meta : {
+            requireAuth : true
+        },
         component: lesson
     }, {
-        path: '/classPage',
-        name: 'classPage',
-        component: classPage
+        path: '/course',
+        name: 'course',
+        meta : {
+            requireAuth : true
+        },
+        component: course
     }, {
         path: '/assignment',
         name: 'assignment',
+        meta : {
+            requireAuth : true
+        },
         component: assignment
     }, {
         path: '/friend',
         name: 'friend',
+        meta : {
+            requireAuth : true
+        },
         component: friend
+    }, {
+        path: '/home',
+        name: 'home',
+        meta : {
+            requireAuth : true
+        },
+        component: home
     }, 
 
     {
         path: '*',
-        component: login
+        component: homepage
     },];
 
 export default new Router({
