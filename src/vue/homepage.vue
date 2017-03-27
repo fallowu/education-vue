@@ -64,18 +64,18 @@
 					<div class="published-part">
 						<div class="row read-option">
 							<div class="col-md-12">
-								<span class="all selected">全部</span>
-								<span class="course">课程</span>
-								<span class="teacher">老师</span>
-								<span class="friend">好友</span>
-								<span class="self">自己</span>
+								<span @click="currentContent = 'tweets'" class="selected">好友</span>
+								<span @click="currentContent = 'assignments'" class="">作业</span>
+								<span @click="currentContent = 'topics'" class="">交流</span>
+								<span @click="currentContent = 'ppts'" class="">课件</span>
+								<span @click="currentContent = 'sources'" class="">资源</span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12" id="publishment-list">
 								<p v-if="tweets == []" class="loading">载入中，请稍后……</p>
 
-								<div v-for="tweet in tweets" class="publishment">
+								<div v-if="currentContent == 'tweets'" v-for="tweet in tweets" class="publishment">
 									<div class="row published">
 										<div class="col-sm-1">
 											<img :src="path + tweet.userFaceIcon">
@@ -92,9 +92,79 @@
 									</div>
 								</div>
 
+								<div v-if="currentContent == 'assignments'" v-for="assignment in assignments" class="publishment">
+									<div class="row published">
+										<div class="col-sm-1">
+											<img :src="path + '/resource/img/lesson.png'">
+										</div>
+										<div class="col-sm-11">
+											<a href=""><label class="name">{{assignment.lesson}}</label></a>
+											发布了一项新作业
+											<p class="content">
+												{{assignment.title}}
+											</p>
+											<span class="time">{{assignment.time}}</span>
+											<span class="reply-toggle">查看</span>
+										</div>
+									</div>
+								</div>
+
+								<div v-if="currentContent == 'topics'" v-for="topic in topics" class="publishment">
+									<div class="row published">
+										<div class="col-sm-1">
+											<img v-if="topic.authorFaceIcon" :src="path + topic.authorFaceIcon">
+											<img v-else :src="path + '/resource/img/blank.jpg'">
+										</div>
+										<div class="col-sm-11">
+											<a href=""><label class="name">{{topic.lesson}}</label></a>
+											展开了一个新讨论
+											<p class="content">
+												{{topic.author}} : {{topic.title}}
+											</p>
+											<span class="time">{{topic.time}}</span>
+											<span class="reply-toggle">评论</span>
+										</div>
+									</div>
+								</div>
+
+								<div v-if="currentContent == 'ppts'" v-for="ppt in ppts" class="publishment">
+									<div class="row published">
+										<div class="col-sm-1">
+											<img :src="path + '/resource/img/lesson.png'">
+										</div>
+										<div class="col-sm-11">
+											<a href=""><label class="name">{{ppt.lesson}}</label></a>
+											上传了一个新课件
+											<p class="content">
+												{{ppt.title}}
+											</p>
+											<span class="time">{{ppt.time}}</span>
+											<span class="reply-toggle">评论</span>
+										</div>
+									</div>
+								</div>
+
+								<div v-if="currentContent == 'sources'" v-for="source in sources" class="publishment">
+									<div class="row published">
+										<div class="col-sm-1">
+											<img v-if="source.authorFaceIcon" :src="path + source.authorFaceIcon">
+											<img v-else :src="path + '/resource/img/blank.jpg'">
+										</div>
+										<div class="col-sm-11">
+											<a href=""><label class="name">{{source.lesson}}</label></a>
+											分享了一个新资源
+											<p class="content">
+												{{source.author}} - {{source.title}}
+											</p>
+											<span class="time">{{source.time}}</span>
+											<span class="reply-toggle">评论</span>
+										</div>
+									</div>
+								</div>
+
 							</div>
 						</div>
-						<pagination v-on:nextPage="currentPage += 1" v-on:prevPage="currentPage -= 1" :totalPage="tweetsPage.page_count"></pagination>
+						<pagination v-on:nextPage="currentPage += 1" v-on:prevPage="currentPage -= 1" :totalPage="pageInfo.page_count"></pagination>
 					</div>
 				</div>
 				
@@ -116,11 +186,16 @@
 				user: {},
 				filePanelToggle: false,
 				facePanelToggle: false,
-				tweetContent : '',
-				tweets : [],
-				tweetsPage : {},
-				currentPage : 1,
-				file : []
+				tweetContent : '',				//要发布的动态内容
+				tweets : [],					//好友动态列表
+				pageInfo : {},					//分页信息
+				assignments : [],				//作业动态列表
+				topics : [],					//交流区动态列表
+				sources : [],					//资源动态列表
+				ppts : [],						//课件动态列表
+				currentPage : 1,				//当前页面
+				currentContent : 'tweets',		//当前动态类型
+				file : []						//上传的文件
 			}
 		},
 		computed : {
@@ -137,10 +212,32 @@
 		},
 		mounted : function() {
 			this.getUserInfo();
-			this.getTweets(1);
+			this.getTweets();
 		},
 		watch : {
-			currentPage : 'getTweets'
+			currentPage : 'getTweets',
+			currentContent : function(curVal, oldVal) {
+				switch (curVal) {
+					case 'tweets':
+						this.getTweets();
+						break;
+					case 'assignments':
+						this.getAssignments();
+						break;
+					case 'ppts':
+						this.getPpts();
+						break;
+					case 'topics':
+						this.getTopics();
+						break;
+					case 'sources':
+						this.getSources();
+						break;
+					default:
+						this.getTweets();
+						break;
+				}
+			}
 		},
 		methods : {
 			fileToggle : function() {
@@ -164,7 +261,47 @@
 				.then((returnData) => {
 					console.log('loading tweets ...')
 					this.tweets = returnData.data.data;
-					this.tweetsPage = returnData.data.page;
+					this.pageInfo = returnData.data.page;
+				})
+				.catch((error) => {
+					console.log('载入动态失败');
+				})
+			},
+			getAssignments : function() {
+				this.$ajax.get('my/assignments?page=' + this.currentPage)
+				.then((returnData) => {
+					this.assignments = returnData.data.data;
+					this.pageInfo = returnData.data.page;
+				})
+				.catch((error) => {
+					console.log('载入动态失败');
+				})
+			},
+			getPpts : function() {
+				this.$ajax.get('my/assignments?page=' + this.currentPage)
+				.then((returnData) => {
+					this.ppts = returnData.data.data;
+					this.pageInfo = returnData.data.page;
+				})
+				.catch((error) => {
+					console.log('载入动态失败');
+				})
+			},
+			getTopics : function() {
+				this.$ajax.get('my/topics?page=' + this.currentPage)
+				.then((returnData) => {
+					this.topics = returnData.data.data;
+					this.pageInfo = returnData.data.page;
+				})
+				.catch((error) => {
+					console.log('载入动态失败');
+				})
+			},
+			getSources : function() {
+				this.$ajax.get('my/sources?page=' + this.currentPage)
+				.then((returnData) => {
+					this.sources = returnData.data.data;
+					this.pageInfo = returnData.data.page;
 				})
 				.catch((error) => {
 					console.log('载入动态失败');
@@ -228,10 +365,14 @@
 		}
 	}
 	.publish-well {
-		background-color: #fafafa;
+		background-color: $bgc;
 		padding: 0 30px;
 		@include bordered(1px, 6px);
 		@include shadowed(10px);
+
+		#content {
+			width: 100%;
+		}
 	}
 	#publish-btn {
 		width: 80px;

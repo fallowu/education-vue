@@ -27,7 +27,7 @@
 											<div class="col-md-6">
 												<a href="" target="_blank" class="name">{{result.name}}</a>
 												<span class="homeland">{{result.home}}</span>
-												<button v-if="!result.friend" class="btn btn-xs btn-success">
+												<button v-if="!result.friend" @click="addFriend(result.id)" class="btn btn-xs btn-success">
 													<i class="glyphicon glyphicon-plus"></i> 添加好友
 												</button>
 											</div>
@@ -53,7 +53,7 @@
 											<div class="col-md-6">
 												<a href="" target="_blank" class="name">{{friend.name}}</a>
 												<span class="homeland">{{friend.home}}</span>
-												<button @click="modalControl = 'del'" class="btn btn-xs btn-danger del-friend">
+												<button @click="deleteFriend(friend.id)" class="btn btn-xs btn-danger del-friend">
 													<i class="glyphicon glyphicon-remove"></i> 删除好友
 												</button>
 											</div>
@@ -165,11 +165,13 @@
 					searchWord : '',
 					searchResults : [],
 					searchPage : {},
+					requests : [],
 					modalControl : ''
 				} 
 			},
 			mounted : function () {
 				this.getFriends(1);
+				this.getFriendRequest();
 			},
 			components : {
 				nHeader,
@@ -202,8 +204,39 @@
 						console.log('搜索失败');
 					})
 				},
-				deleteFriend : function() {
+				getFriendRequest : function() {
+					this.$ajax.get('my/friends/requests')
+					.then((returnData) => {
+						this.requests = returnData.data.data;
+						console.log(this.requests);
+					})
+					.catch((error) => {
+						console.log('发送好友请求失败');
+					})
+				},
+				doRequest : function(action) {
 
+				},
+				deleteFriend : function(id) {
+					this.$ajax.delete('my/friends/' + id)
+					.then((returnData) => {
+						if(returnData.data.meta.ErrCode === '0x000000') {
+							console.log('删除好友成功')
+						}
+						console.log(returnData.data);
+					})
+					.catch((error) => {
+						console.log('删除好友请求失败');
+					})
+				},
+				addFriend : function(id) {
+					this.$ajax.post('users/' + id + '/requests')
+					.then((returnData) => {
+						console.log(returnData.data);
+					})
+					.catch((error) => {
+						console.log('发送好友请求失败');
+					})
 				}
 			}
 		}
@@ -213,7 +246,7 @@
 		@import '../scss/common.scss';
 		#search-part{
 			padding: 12px;
-			background-color: #eee;
+			background-color: $bgc;
 			border: 1px solid #ddd;
 			border-radius: 5px;
 			margin-bottom: 10px;
@@ -222,11 +255,14 @@
 			@include shadowed(10px);
 			@include bordered(1px, 6px);
 			.panel-heading {
-				background: #fafafa;
+				padding: 10px 20px;
+				background: $bgc;
 				border: 0;
+				border-top-left-radius: 6px;
+				border-top-right-radius: 6px;
 			}
 			#friend-list .friend, #result-list .result-item{
-				background-color: #fafafa;
+				background-color: $bgc;
 				@include bordered(1px, 6px);
 				margin-bottom: 10px;
 			}

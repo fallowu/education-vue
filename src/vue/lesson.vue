@@ -11,38 +11,38 @@
 						<router-link :to="{name: 'course', params : {info: lesson}, query:{id: lesson.course}}" class="switch-btn">
 							<i class="glyphicon glyphicon-arrow-right"></i>进入课程空间
 						</router-link>
-						</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="row">
-					<div class="col-md-3">
-						<div class="row" id="class-info">
-							<div class="col-md-12">
-								<div class="panel panel-info">
-									<div class="panel-heading">教学班信息</div>
-									<div class="panel-body">
-										<table>
-											<tr><th>教学班号</th><td>{{lesson.id}}</td></tr>
-											<tr><th>课程名称</th><td>{{lesson.name}}</td></tr>
-											<tr><th>教师姓名</th><td>{{lesson.teacher}}</td></tr>
-											<tr><th>学期</th><td>{{lesson.term}}</td></tr>
-										</table>
-										<input type="hidden" id="curClassId" value="">
-									</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="row" id="class-info">
+						<div class="col-md-12">
+							<div class="panel panel-info">
+								<div class="panel-heading">教学班信息</div>
+								<div class="panel-body">
+									<table>
+										<tr><th>教学班号</th><td>{{lesson.id}}</td></tr>
+										<tr><th>课程名称</th><td>{{lesson.name}}</td></tr>
+										<tr><th>教师姓名</th><td>{{lesson.teacher}}</td></tr>
+										<tr><th>学期</th><td>{{lesson.term}}</td></tr>
+									</table>
+									<input type="hidden" id="curClassId" value="">
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 
-					<div class="col-md-9">
-						<ul class="nav nav-tabs" id="section-list">
-							<li role="presentation" :class="{ active: activeContent == 'assignments'}"><a @click="activeContent = 'assignments'" href="javascript:void(0)">作业</a></li>
-							<li role="presentation" :class="{ active: activeContent == 'ppts'}"><a @click="activeContent = 'ppts'" href="javascript:void(0)">课件</a></li>
-							<li role="presentation" :class="{ active: activeContent == 'topics'}"><a @click="activeContent = 'topics'" href="javascript:void(0)">交流区</a></li>
-							<li role="presentation" :class="{ active: activeContent == 'sources'}"><a @click="activeContent = 'sources'" href="javascript:void(0)">资源共享</a></li>
-							<li role="presentation" :class="{ active: activeContent == 'my'}"><a @click="activeContent = 'my'" href="javascript:void(0)">我的发布</a></li>
-							<li role="presentation" :class="{ active: activeContent == 'students'}"><a @click="activeContent = 'students'" href="javascript:void(0)">同学列表</a></li>
+				<div class="col-md-9">
+					<ul class="nav nav-tabs" id="section-list">
+						<li role="presentation" :class="{ active: activeContent == 'assignments'}"><a @click="activeContent = 'assignments'" href="javascript:void(0)">作业</a></li>
+						<li role="presentation" :class="{ active: activeContent == 'ppts'}"><a @click="activeContent = 'ppts'" href="javascript:void(0)">课件</a></li>
+						<li role="presentation" :class="{ active: activeContent == 'topics'}"><a @click="activeContent = 'topics'" href="javascript:void(0)">交流区</a></li>
+						<li role="presentation" :class="{ active: activeContent == 'sources'}"><a @click="activeContent = 'sources'" href="javascript:void(0)">资源共享</a></li>
+						<li role="presentation" :class="{ active: activeContent == 'my'}"><a @click="activeContent = 'my'" href="javascript:void(0)">我的发布</a></li>
+						<li role="presentation" :class="{ active: activeContent == 'students'}"><a @click="activeContent = 'students'" href="javascript:void(0)">同学列表</a></li>
   					<!-- <c:if test="${user.teacher}">
   						<li role="presentation" data-target="7"><a href="javascript:void(0)">学生列表</a></li>
   					</c:if>
@@ -101,7 +101,7 @@
   										<td v-if="topic.solved" class="text-success"><i class="glyphicon glyphicon-ok-sign"></i> 已解决</td>
   										<td v-else class="text-warning"><i class='glyphicon glyphicon-question-sign'></i> 未解决</td>
   										<td>
-  											<a class="topic-detail-trigger">{{topic.title}}</a>
+  											<a @click="showTopic(topic.id)" class="topic-detail-trigger">{{topic.title}}</a>
   										</td>
   										<td><a href="javascript:;">{{topic.author}}</a></td>
   										<td>{{topic.type}}</td>
@@ -154,47 +154,15 @@
   	</div> <!-- /container -->
   	<!-- todo -->
   	<n-footer></n-footer>
+
+  	<topic-modal :topicId="currentTopicId" :show="showModal" @closeModal="showModal = false" ></topic-modal>
+
   </div>
 </template>
-<style lang="sass">
-	.bread{
-		display: inline-block;
-		margin-bottom: 0.8em;
-		padding: 4px 8px 0;
-		background-color: #eee;
-		border: 2px solid #f2f2f2;
-		border-radius: 4px;
-	}
-
-	#tab-content{
-		border: 1px solid #ddd;
-		border-top: 0;
-		padding: 1em;
-		background-color: #fff;
-		border-radius: 0 4px 4px 4px;
-	}
-	#tab-content table{
-		margin-bottom: 5px;
-		margin-top: 10px;
-	}
-
-	.pagination{
-		margin: 10px 0 0;
-	}
-	.classmate, #result-list .classmate, #tutor-list .classmate{
-		text-align: center;
-		margin-bottom: 8px;
-	}
-	.classmate img, #result-list .classmate img, #tutor-list img{
-		display: block;
-		margin: 0 auto;
-		border: 1px solid #ccc;
-		width: 79px;
-	}
-</style>
 <script>
 	import nHeader from '../components/nHeader.vue'
 	import nFooter from '../components/nFooter.vue'
+	import topicModal from '../components/topicmodal.vue'
 	export default {
 		data : function () {
 			return {
@@ -205,8 +173,11 @@
 				sources : [],
 				students : [],
 				lesson : {},
+
+				currentTopicId : '',
 				//激活的信息内容
-				activeContent : 'assignments'
+				activeContent : 'assignments',
+				showModal : false
 			}
 		},
 		computed : {
@@ -286,11 +257,70 @@
 				.catch((error) => {
 					console.log('载入学生信息失败');
 				})
+			},
+			showTopic : function(id) {
+				console.log('showing topic: ' + id);
+				this.currentTopicId = id;
+				this.showModal = true;
 			}
 		},
 		components : {
 			nHeader,
-			nFooter
+			nFooter,
+			topicModal
 		}
 	}
 </script>
+<style lang="sass">
+	@import '../scss/common.scss';
+	.panel {
+		@include shadowed(10px);
+		@include bordered(1px, 6px);
+		.panel-heading {
+			background: $bgc;
+			border: 0;
+		}
+	}
+	.bread{
+		display: inline-block;
+		margin-bottom: 0.8em;
+		padding: 12px 20px;
+		background-color: $bgc;
+		line-height: 1;
+		@include shadowed(10px);
+		@include bordered(1px, 6px);
+		label {
+			margin-bottom: 0;
+		}
+	}
+	.nav-tabs {
+		border: 0;
+
+	}
+	#tab-content{
+		padding: 1em;
+		background-color: #fff;
+		@include shadowed(10px);
+		@include bordered(1px, 6px);
+		border-top-left-radius: 0;
+		border-top: 0;
+	}
+	#tab-content table{
+		margin-bottom: 5px;
+		margin-top: 10px;
+	}
+
+	.pagination{
+		margin: 10px 0 0;
+	}
+	.classmate, #result-list .classmate, #tutor-list .classmate{
+		text-align: center;
+		margin-bottom: 8px;
+	}
+	.classmate img, #result-list .classmate img, #tutor-list img{
+		display: block;
+		margin: 0 auto;
+		border: 1px solid #ccc;
+		width: 79px;
+	}
+</style>
