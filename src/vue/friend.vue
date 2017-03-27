@@ -5,9 +5,9 @@
 			<div class="row">
 				<div class="col-md-9">
 					<div class="input-group" id="search-part">
-						<input type="text" class="form-control" id="keyword" placeholder="请输入关键字搜索用户...">
+						<input v-model="searchWord" type="text" class="form-control" id="keyword" placeholder="请输入关键字搜索用户...">
 						<span class="input-group-btn">
-							<button class="btn btn-info" type="button" id="search-btn">
+							<button @click="searchUser(1)" class="btn btn-info" type="button" id="search-btn">
 								<i class="glyphicon glyphicon-search"></i> 搜索
 							</button>
 						</span>
@@ -16,12 +16,30 @@
 					<div class="panel panel-info" id="search-result">
 						<div class="panel-heading">搜索结果&nbsp;&nbsp;&nbsp;&nbsp;共<span id="search-sum"></span>位</div>
 						<div class="panel-body">
-							<div class="row" id="result-list"></div>
+							<div class="row" id="result-list">
+								<div v-for="result in searchResults" class="col-md-4">
+									<div class="result-item">
+										<div class="row">
+											<div class="col-md-6">	
+												<img v-if="result.faceIcon" :src="path + result.faceIcon">
+												<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
+											</div>
+											<div class="col-md-6">
+												<a href="" target="_blank" class="name">{{result.name}}</a>
+												<span class="homeland">{{result.home}}</span>
+												<button v-if="!result.friend" class="btn btn-xs btn-success">
+													<i class="glyphicon glyphicon-plus"></i> 添加好友
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>	
 					</div>
 
 					<div class="panel panel-info" id="all-friend">
-						<div class="panel-heading">全部好友&nbsp;&nbsp;&nbsp;&nbsp;共<span id="friend-sum"></span>位</div>
+						<div class="panel-heading">全部好友&nbsp;&nbsp;&nbsp;&nbsp;共<span id="friend-sum">{{friendPage.total_count}}</span>位</div>
 						<div class="panel-body">
 							<div class="row" id="friend-list">
 
@@ -29,19 +47,20 @@
 									<div class="friend">
 										<div class="row">
 											<div class="col-md-6">	
-												<img :src="path + friend.faceIcon"></img>
+												<img v-if="friend.faceIcon" :src="path + friend.faceIcon">
+												<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
 											</div>
 											<div class="col-md-6">
 												<a href="" target="_blank" class="name">{{friend.name}}</a>
 												<span class="homeland">{{friend.home}}</span>
-												<button class="btn btn-xs btn-danger del-friend" data-toggle="modal" data-target="#del-friend-confirm">
+												<button @click="modalControl = 'del'" class="btn btn-xs btn-danger del-friend">
 													<i class="glyphicon glyphicon-remove"></i> 删除好友
 												</button>
 											</div>
 										</div>
 									</div>
-									
 								</div>
+
 							</div>
 							<!-- <div class="col-md-12 msg" id="friend-msg">暂时没有好友</div> -->
 						</div>
@@ -114,12 +133,23 @@
 	  				</div>
 	  			</div>
 	  		</div>
-
-	  		<hr>
-	  		<footer>
-	  			<p>&copy; Company 2015. Milley Shu</p>
-	  		</footer>
 	  	</div> <!-- /container -->
+
+	  	<div v-if="modalControl == 'del'" class="modal">
+	  		<div class="modal-dialog">
+	  			<div class="modal-content">
+	  				<div class="modal-header">
+	  					<h4 class="modal-title">确定把好友 <label></label> 从列表中删除？</h4>
+	  					<input type="hidden" />
+	  				</div>
+	  				<div class="modal-footer">
+	  					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	  					<button type="button" class="btn btn-primary" id="del-friend-btn">确定</button>
+	  				</div>
+	  			</div><!-- /.modal-content -->
+	  		</div><!-- /.modal-dialog -->
+	  	</div><!-- /.modal -->
+
 	  	<n-footer></n-footer>
 	  </div>
 	</template>
@@ -131,7 +161,11 @@
 			data : function() {
 				return {
 					friends : [],
-					page : {}
+					friendPage : {},
+					searchWord : '',
+					searchResults : [],
+					searchPage : {},
+					modalControl : ''
 				} 
 			},
 			mounted : function () {
@@ -151,11 +185,25 @@
 					this.$ajax.get('my/friends?page=' + page)
 					.then((returnData) => {
 						this.friends = returnData.data.data;
-						this.page = returnData.data.page;
+						this.friendPage = returnData.data.page;
 					})
 					.catch((error) => {
 						console.log('载入好友信息失败');
 					})
+				},
+				searchUser : function (page) {
+					this.$ajax.get('users?word=' + this.searchWord + '&page=' + page)
+					.then((returnData) => {
+						this.searchResults = returnData.data.data;
+						console.log(this.searchResults);
+						this.searchPage = returnData.data.page;
+					})
+					.catch((error) => {
+						console.log('搜索失败');
+					})
+				},
+				deleteFriend : function() {
+
 				}
 			}
 		}
@@ -170,12 +218,7 @@
 			border-radius: 5px;
 			margin-bottom: 10px;
 		}
-
-		#search-result{
-			display: none;
-		}
-		
-		#all-friend {
+		#all-friend, #search-result {
 			@include shadowed(10px);
 			@include bordered(1px, 6px);
 			.panel-heading {

@@ -122,6 +122,9 @@ const routes = [{
 
     {
         path: '*',
+        meta : {
+            requireAuth : true
+        },
         component: homepage
     },];
 

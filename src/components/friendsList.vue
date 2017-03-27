@@ -26,8 +26,8 @@
 			}
 		},
 		props : {
-			isSelf : true,
-			userId : ''
+			isSelf : Boolean,
+			userId : String
 		},
 		mounted : function() {
 			this.getFriends();

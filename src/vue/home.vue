@@ -3,6 +3,19 @@
 		<n-header></n-header>
 		<div class="container main">
 			<div class="row">
+				<div class="col-md-3">
+					<div class="simpleInfo-part">
+						<div class="row">
+							<div class="col-md-12">
+								<a href="uploadFace.do">
+									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
+									<img v-else src="" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+					<friends-list :isSelf="false" :userId="userId"></friends-list>
+				</div>
 				<div class="col-md-9">
 					<div class="basic-info box">
 						<div class="row">
@@ -29,19 +42,7 @@
 					</div>
 				</div>
 
-				<div class="col-md-3">
-					<div class="simpleInfo-part">
-						<div class="row">
-							<div class="col-md-12">
-								<a href="uploadFace.do">
-									<img v-if="user.faceIcon" :src="path + user.faceIcon" alt="">
-									<img v-else src="" alt="">
-								</a>
-							</div>
-						</div>
-					</div>
-					<friends-list :isSelf="false" :userId="userId"></friends-list>
-				</div>
+				
 			</div>
 		</div>
 		<n-footer></n-footer>

@@ -94,11 +94,7 @@
 
 							</div>
 						</div>
-						<nav>
-							<ul class="pagination">
-								
-							</ul>
-						</nav>
+						<pagination v-on:nextPage="currentPage += 1" v-on:prevPage="currentPage -= 1" :totalPage="tweetsPage.page_count"></pagination>
 					</div>
 				</div>
 				
@@ -113,6 +109,7 @@
 	import nFooter from '../components/nFooter.vue'
 	import friendsList from '../components/friendsList.vue'
 	import visitorsList from '../components/visitorsList.vue'
+	import pagination from '../components/pagination.vue'
 	export default {
 		data : function () {
 			return {
@@ -121,6 +118,8 @@
 				facePanelToggle: false,
 				tweetContent : '',
 				tweets : [],
+				tweetsPage : {},
+				currentPage : 1,
 				file : []
 			}
 		},
@@ -136,10 +135,12 @@
 				return rest < 0 ? 0 : rest;
 			}
 		},
-
 		mounted : function() {
 			this.getUserInfo();
 			this.getTweets(1);
+		},
+		watch : {
+			currentPage : 'getTweets'
 		},
 		methods : {
 			fileToggle : function() {
@@ -158,10 +159,12 @@
 					console.log('载入个人信息失败');
 				})
 			},
-			getTweets : function(page) {
-				this.$ajax.get('my/friends/tweets?page=' + page)
+			getTweets : function() {
+				this.$ajax.get('my/friends/tweets?page=' + this.currentPage)
 				.then((returnData) => {
+					console.log('loading tweets ...')
 					this.tweets = returnData.data.data;
+					this.tweetsPage = returnData.data.page;
 				})
 				.catch((error) => {
 					console.log('载入动态失败');
@@ -186,7 +189,8 @@
 			nHeader,
 			nFooter,
 			friendsList,
-			visitorsList
+			visitorsList,
+			pagination
 		}
 	}
 </script>
