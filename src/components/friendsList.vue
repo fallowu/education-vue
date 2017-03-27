@@ -8,11 +8,11 @@
 		</div>
 		<div class="row" id="friend-list">
 			<span v-if="!friends" class="no-friend">暂无好友</span>
-				<div v-for="friend in friends" class="friend">
-					<img v-if="friend.faceIcon" :src="path + friend.faceIcon" alt="">
-					<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
-					<router-link :to="{name: 'home', query:{id: friend.id}}" class="name">{{friend.name}}</router-link>
-				</div>
+			<div v-for="friend in friends" class="friend">
+				<img v-if="friend.faceIcon" :src="path + friend.faceIcon" alt="">
+				<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
+				<router-link :to="{name: 'home', query:{id: friend.id}}" class="name">{{friend.name}}</router-link>
+			</div>
 			
 		</div>
 	</div>
@@ -63,50 +63,50 @@
 
 <style lang="sass">
 
-/* Visitor Part & friend Part  BEGIN */
-.friend-part{
-	margin-top: 10px;
-	label.box-title + a{
-		margin-top: -2.2em;
-		color: #ddd;
-	}
-}
+	/* Visitor Part & friend Part  BEGIN */
+	.friend-part{
+		margin-top: 10px;
+		label.box-title + a{
+			margin-top: -2.2em;
+			color: #ddd;
+		}
+		#friend-list{
+			margin: 3px 1px 0 9px;
+			padding: 10px 0;
+			.friend{
+				padding-right: 0;
+				float: left;
+				margin-right: 8px;
+				margin-bottom: 8px;
+			}
+		}
 
-#friend-list{
-	margin: 3px 1px 0 9px;
-	padding: 10px 0;
-	.friend{
-		padding-right: 0;
-		float: left;
-		margin-right: 8px;
-		margin-bottom: 8px;
+		#friend-list .friend img{
+			border: 1px solid #ccc;
+			width: 75px;
+			border-radius: 50%;
+		}
+		#friend-list .friend a.name, 
+		#friend-list .friend span{
+			display: block;
+			text-align: center;
+		}
 	}
-}
 
-#friend-list .friend img{
-	border: 1px solid #ccc;
-	width: 75px;
-	border-radius: 50%;
-}
-#friend-list .friend a.name, 
-#friend-list .friend span{
-	display: block;
-	text-align: center;
-}
 
-@media screen and (max-width: 1200px) and (min-width: 992px){
-	#friend-list .friend img{
-		width: 92px;
+	@media screen and (max-width: 1200px) and (min-width: 992px){
+		#friend-list .friend img{
+			width: 92px;
+		}
 	}
-}
-@media screen and (max-width: 992px) and (min-width: 768px){
-	#friend-list .friend img{
-		width: 70px;
+	@media screen and (max-width: 992px) and (min-width: 768px){
+		#friend-list .friend img{
+			width: 70px;
+		}
 	}
-}
-@media screen and (max-width: 308px){
-	#friend-list .friend img{
-		width: 4.8em;
+	@media screen and (max-width: 308px){
+		#friend-list .friend img{
+			width: 4.8em;
+		}
 	}
-}
 </style>
