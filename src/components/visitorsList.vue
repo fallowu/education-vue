@@ -11,8 +11,8 @@
 				<div class="visitor">
 					<img v-if="visitor.faceIcon" :src="path + visitor.faceIcon" alt="">
 					<img v-else :src="path + '/resource/img/blank.jpg'" alt="">
-					<a class="name" target="_blank" :href="visitor.homepage">{{visitor.name}}</a>
-					<span class="time">{{visitor.time}}</span>
+					<router-link :to="{name: 'home', query:{id: visitor.id}}" class="name">{{visitor.name}}</router-link>
+					<span  class="time">{{visitor.time}}</span>
 				</div>
 			</template>
 		</div>

@@ -41,8 +41,6 @@
 						</div>
 					</div>
 				</div>
-
-				
 			</div>
 		</div>
 		<n-footer></n-footer>

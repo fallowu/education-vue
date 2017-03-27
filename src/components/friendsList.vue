@@ -67,8 +67,7 @@
 	.friend-part{
 		margin-top: 10px;
 		label.box-title + a{
-			margin-top: -2.2em;
-			color: #ddd;
+			color: #999;
 		}
 		#friend-list{
 			margin: 3px 1px 0 9px;
